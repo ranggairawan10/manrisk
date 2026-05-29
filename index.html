@@ -2244,7 +2244,7 @@
     ═══════════════════════════════════════════════ */
     function doLogin() {
       const u = document.getElementById('uname').value.trim();
-      const p = document.getElementById('upass').value;
+      const p = document.getElementById('upass').value.trim();
       const err = document.getElementById('login-err');
       if (u === 'LizzLee' && p === 'manrisk17002005') {
         state.view = 'dashboard';
