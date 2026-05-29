@@ -1,0 +1,2333 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manajemen Risiko untuk Semua | NUVY by Nusva</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --navy:      #0A3D62;
+      --navy-80:   #1a5a8a;
+      --teal:      #0FA3B1;
+      --teal-20:   #e0f5f7;
+      --cyan:      #1ECAD3;
+      --gold:      #F2C94C;
+      --gold-20:   #fdf6d8;
+      --white:     #FFFFFF;
+      --gray-50:   #F9FAFB;
+      --gray-100:  #F3F4F6;
+      --gray-200:  #E5E7EB;
+      --gray-400:  #9CA3AF;
+      --gray-500:  #6B7280;
+      --gray-700:  #374151;
+      --gray-900:  #111827;
+      --green:     #10B981;
+      --green-10:  #d1fae5;
+      --red:       #EF4444;
+      --red-10:    #fee2e2;
+      --font:      'Plus Jakarta Sans', sans-serif;
+      --sidebar:   280px;
+      --topbar:    60px;
+      --radius:    12px;
+      --shadow:    0 2px 12px rgba(10,61,98,.10);
+      --shadow-lg: 0 8px 32px rgba(10,61,98,.15);
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: var(--font); background: var(--white); color: var(--gray-900); min-height: 100vh; }
+    a { text-decoration: none; color: inherit; }
+    button { font-family: var(--font); cursor: pointer; border: none; outline: none; }
+    input { font-family: var(--font); }
+
+    /* ─── ANIMATIONS ─── */
+    @keyframes fadeIn  { from { opacity:0; transform:translateY(14px) } to { opacity:1; transform:translateY(0) } }
+    @keyframes slideIn { from { opacity:0; transform:translateX(-20px) } to { opacity:1; transform:translateX(0) } }
+    @keyframes shake   { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-8px)} 75%{transform:translateX(8px)} }
+    @keyframes popIn   { 0%{transform:scale(.85);opacity:0} 60%{transform:scale(1.04)} 100%{transform:scale(1);opacity:1} }
+    @keyframes pulse   { 0%,100%{opacity:1} 50%{opacity:.5} }
+    .fade-in  { animation: fadeIn  .45s ease both; }
+    .slide-in { animation: slideIn .35s ease both; }
+    .shake    { animation: shake   .4s ease; }
+
+    /* ─── SCROLLBAR ─── */
+    ::-webkit-scrollbar { width:6px; }
+    ::-webkit-scrollbar-track { background: var(--gray-100); }
+    ::-webkit-scrollbar-thumb { background: var(--gray-300, #d1d5db); border-radius:6px; }
+
+    /* ══════════════════════════════════════
+       LOGIN PAGE
+    ══════════════════════════════════════ */
+    .login-page {
+      min-height: 100vh;
+      background: var(--gray-50);
+      background-image:
+        radial-gradient(circle at 15% 20%, rgba(15,163,177,.08) 0%, transparent 55%),
+        radial-gradient(circle at 85% 80%, rgba(10,61,98,.06) 0%, transparent 55%),
+        repeating-linear-gradient(0deg, transparent, transparent 39px, rgba(10,61,98,.03) 40px),
+        repeating-linear-gradient(90deg, transparent, transparent 39px, rgba(10,61,98,.03) 40px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .login-wrapper {
+      width: 100%;
+      max-width: 440px;
+      animation: fadeIn .6s ease both;
+    }
+    .login-badge {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 24px;
+      justify-content: center;
+    }
+    .login-badge .mark {
+      width: 36px; height: 36px;
+      background: var(--navy);
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--gold);
+      font-weight: 800;
+      font-size: 15px;
+      letter-spacing: -.5px;
+    }
+    .login-badge .brand { font-weight: 700; font-size: 18px; color: var(--navy); letter-spacing: -.3px; }
+    .login-badge .brand span { color: var(--teal); }
+    .login-card {
+      background: var(--white);
+      border-radius: 20px;
+      box-shadow: var(--shadow-lg);
+      overflow: hidden;
+      border: 1px solid var(--gray-200);
+    }
+    .login-header {
+      background: linear-gradient(135deg, var(--navy) 0%, #0d4f80 100%);
+      padding: 32px 36px 28px;
+      position: relative;
+      overflow: hidden;
+    }
+    .login-header::before {
+      content: '';
+      position: absolute;
+      top: -20px; right: -20px;
+      width: 120px; height: 120px;
+      background: rgba(242,201,76,.12);
+      border-radius: 50%;
+    }
+    .login-header::after {
+      content: '';
+      position: absolute;
+      bottom: -30px; right: 40px;
+      width: 80px; height: 80px;
+      background: rgba(15,163,177,.15);
+      border-radius: 50%;
+    }
+    .login-header h1 { color: var(--white); font-size: 22px; font-weight: 800; line-height: 1.3; position: relative; z-index: 1; }
+    .login-header h1 .accent { color: var(--gold); }
+    .login-header p { color: rgba(255,255,255,.7); font-size: 13px; margin-top: 6px; position: relative; z-index: 1; line-height: 1.5; }
+    .login-highlights {
+      display: flex; gap: 12px; margin-top: 20px; position: relative; z-index: 1; flex-wrap: wrap;
+    }
+    .login-highlights .chip {
+      background: rgba(255,255,255,.12);
+      color: rgba(255,255,255,.85);
+      font-size: 11px; font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 20px;
+      border: 1px solid rgba(255,255,255,.18);
+      letter-spacing: .2px;
+    }
+    .login-body { padding: 32px 36px 36px; }
+    .login-body label { display: block; font-size: 12px; font-weight: 600; color: var(--gray-500); text-transform: uppercase; letter-spacing: .6px; margin-bottom: 6px; margin-top: 18px; }
+    .login-body label:first-child { margin-top: 0; }
+    .login-input {
+      width: 100%;
+      height: 46px;
+      border: 1.5px solid var(--gray-200);
+      border-radius: 10px;
+      padding: 0 14px;
+      font-size: 15px;
+      color: var(--gray-900);
+      background: var(--gray-50);
+      transition: border-color .2s, box-shadow .2s;
+    }
+    .login-input:focus { outline: none; border-color: var(--teal); background: var(--white); box-shadow: 0 0 0 3px rgba(15,163,177,.12); }
+    .login-error { display: none; color: var(--red); font-size: 12px; margin-top: 8px; font-weight: 500; }
+    .login-error.show { display: block; }
+    .btn-login {
+      width: 100%; height: 48px;
+      background: linear-gradient(135deg, var(--teal), var(--cyan));
+      color: var(--white);
+      font-size: 15px; font-weight: 700;
+      border-radius: 10px;
+      margin-top: 24px;
+      transition: transform .15s, box-shadow .15s;
+      letter-spacing: .2px;
+    }
+    .btn-login:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(15,163,177,.35); }
+    .btn-login:active { transform: translateY(0); }
+    .login-footer { text-align: center; margin-top: 20px; font-size: 12px; color: var(--gray-400); }
+    .login-footer span { color: var(--teal); font-weight: 600; }
+
+    /* ══════════════════════════════════════
+       MAIN APP LAYOUT
+    ══════════════════════════════════════ */
+    .app-layout { display: flex; height: 100vh; overflow: hidden; }
+
+    /* ─── SIDEBAR ─── */
+    .sidebar {
+      width: var(--sidebar);
+      background: var(--navy);
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      flex-shrink: 0;
+      overflow: hidden;
+    }
+    .sidebar-top {
+      padding: 20px 20px 16px;
+      border-bottom: 1px solid rgba(255,255,255,.08);
+    }
+    .sidebar-logo {
+      display: flex; align-items: center; gap: 10px;
+      text-decoration: none;
+    }
+    .sidebar-logo .mark {
+      width: 32px; height: 32px;
+      background: linear-gradient(135deg, var(--teal), var(--cyan));
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--white); font-weight: 800; font-size: 13px;
+    }
+    .sidebar-logo .name { color: var(--white); font-weight: 700; font-size: 15px; letter-spacing: -.2px; }
+    .sidebar-logo .name span { color: var(--teal); }
+    .sidebar-course-info {
+      margin-top: 14px;
+      background: rgba(255,255,255,.06);
+      border-radius: 10px;
+      padding: 12px 14px;
+    }
+    .sidebar-course-info .course-name {
+      color: rgba(255,255,255,.5);
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: .8px;
+      font-weight: 600;
+    }
+    .sidebar-course-info .course-title {
+      color: var(--white);
+      font-size: 13px;
+      font-weight: 600;
+      margin-top: 3px;
+      line-height: 1.4;
+    }
+    .sidebar-progress-bar {
+      height: 4px;
+      background: rgba(255,255,255,.1);
+      border-radius: 2px;
+      margin-top: 10px;
+      overflow: hidden;
+    }
+    .sidebar-progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--teal), var(--cyan));
+      border-radius: 2px;
+      transition: width .6s ease;
+    }
+    .sidebar-progress-text {
+      color: rgba(255,255,255,.45);
+      font-size: 10px;
+      margin-top: 5px;
+      text-align: right;
+    }
+    .sidebar-nav {
+      flex: 1;
+      overflow-y: auto;
+      padding: 12px 12px;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(255,255,255,.1) transparent;
+    }
+    .sidebar-nav::-webkit-scrollbar { width: 4px; }
+    .sidebar-nav::-webkit-scrollbar-thumb { background: rgba(255,255,255,.15); border-radius: 4px; }
+    .nav-section-label {
+      color: rgba(255,255,255,.3);
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: .8px;
+      font-weight: 600;
+      padding: 8px 8px 4px;
+    }
+    .nav-item {
+      display: flex; align-items: center; gap: 10px;
+      padding: 9px 10px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background .18s;
+      margin-bottom: 2px;
+      position: relative;
+    }
+    .nav-item:hover { background: rgba(255,255,255,.07); }
+    .nav-item.active { background: rgba(15,163,177,.18); }
+    .nav-item.active .nav-num { background: var(--teal); color: var(--white); }
+    .nav-num {
+      width: 24px; height: 24px;
+      background: rgba(255,255,255,.1);
+      border-radius: 6px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px; font-weight: 700;
+      color: rgba(255,255,255,.5);
+      flex-shrink: 0;
+      transition: background .18s;
+    }
+    .nav-text { flex: 1; }
+    .nav-title { color: rgba(255,255,255,.75); font-size: 12px; font-weight: 500; line-height: 1.3; }
+    .nav-item.active .nav-title { color: var(--white); font-weight: 600; }
+    .nav-item.done .nav-title { color: rgba(255,255,255,.55); }
+    .nav-badge {
+      font-size: 9px; font-weight: 700;
+      padding: 2px 6px;
+      border-radius: 4px;
+      text-transform: uppercase;
+      letter-spacing: .3px;
+    }
+    .nav-badge.quiz { background: rgba(242,201,76,.2); color: var(--gold); }
+    .nav-check {
+      color: var(--green);
+      font-size: 12px;
+      flex-shrink: 0;
+    }
+    .sidebar-bottom {
+      padding: 12px;
+      border-top: 1px solid rgba(255,255,255,.08);
+    }
+    .btn-back-dash {
+      width: 100%;
+      background: rgba(255,255,255,.06);
+      color: rgba(255,255,255,.65);
+      font-size: 12px;
+      font-weight: 600;
+      padding: 9px;
+      border-radius: 8px;
+      border: 1px solid rgba(255,255,255,.1);
+      transition: background .18s, color .18s;
+      display: flex; align-items: center; justify-content: center; gap: 6px;
+    }
+    .btn-back-dash:hover { background: rgba(255,255,255,.1); color: var(--white); }
+
+    /* ─── MAIN CONTENT AREA ─── */
+    .main-area {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      background: var(--gray-50);
+    }
+    .topbar {
+      height: var(--topbar);
+      background: var(--white);
+      border-bottom: 1px solid var(--gray-200);
+      display: flex; align-items: center;
+      padding: 0 28px;
+      gap: 16px;
+      flex-shrink: 0;
+    }
+    .topbar-breadcrumb { flex: 1; display: flex; align-items: center; gap: 6px; font-size: 13px; }
+    .topbar-breadcrumb .crumb-home { color: var(--gray-400); font-weight: 500; cursor: pointer; }
+    .topbar-breadcrumb .crumb-home:hover { color: var(--navy); }
+    .topbar-breadcrumb .sep { color: var(--gray-300); }
+    .topbar-breadcrumb .crumb-current { color: var(--navy); font-weight: 600; }
+    .topbar-right { display: flex; align-items: center; gap: 10px; }
+    .user-pill {
+      display: flex; align-items: center; gap: 8px;
+      background: var(--gray-50);
+      border: 1px solid var(--gray-200);
+      border-radius: 20px;
+      padding: 4px 12px 4px 6px;
+    }
+    .user-avatar {
+      width: 28px; height: 28px;
+      background: var(--navy);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--gold);
+      font-size: 11px; font-weight: 800;
+    }
+    .user-name { font-size: 12px; font-weight: 600; color: var(--gray-700); }
+
+    .content-scroll {
+      flex: 1;
+      overflow-y: auto;
+      padding: 28px;
+    }
+
+    /* ─── CHAPTER CONTENT ─── */
+    .chapter-header {
+      background: var(--white);
+      border-radius: var(--radius);
+      border: 1px solid var(--gray-200);
+      padding: 28px 32px;
+      margin-bottom: 20px;
+      display: flex; align-items: flex-start; gap: 20px;
+      box-shadow: var(--shadow);
+    }
+    .ch-num-badge {
+      width: 52px; height: 52px;
+      background: linear-gradient(135deg, var(--navy), var(--navy-80));
+      border-radius: 14px;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      color: var(--white);
+    }
+    .ch-num-badge .label { font-size: 8px; font-weight: 600; text-transform: uppercase; letter-spacing: .5px; opacity: .7; }
+    .ch-num-badge .num { font-size: 22px; font-weight: 800; line-height: 1; }
+    .ch-meta .ch-tag {
+      font-size: 10px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: .6px;
+      color: var(--teal);
+      margin-bottom: 5px;
+    }
+    .ch-meta h2 { font-size: 22px; font-weight: 800; color: var(--navy); line-height: 1.2; }
+    .ch-meta .ch-time { font-size: 12px; color: var(--gray-400); margin-top: 6px; font-weight: 500; }
+    .ch-meta .ch-time span { color: var(--teal); font-weight: 600; }
+
+    .content-card {
+      background: var(--white);
+      border-radius: var(--radius);
+      border: 1px solid var(--gray-200);
+      padding: 24px 28px;
+      margin-bottom: 16px;
+      box-shadow: var(--shadow);
+      animation: fadeIn .4s ease both;
+    }
+    .content-card h3 {
+      font-size: 16px; font-weight: 700; color: var(--navy);
+      margin-bottom: 12px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid var(--teal-20);
+    }
+    .content-card p { font-size: 14px; line-height: 1.75; color: var(--gray-700); margin-bottom: 10px; }
+    .content-card p:last-child { margin-bottom: 0; }
+    .content-card ul, .content-card ol { padding-left: 20px; }
+    .content-card li { font-size: 14px; line-height: 1.75; color: var(--gray-700); margin-bottom: 4px; }
+
+    .highlight-box {
+      background: var(--teal-20);
+      border-left: 4px solid var(--teal);
+      border-radius: 8px;
+      padding: 14px 16px;
+      margin: 14px 0;
+    }
+    .highlight-box .hb-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .6px; color: var(--teal); margin-bottom: 4px; }
+    .highlight-box p { font-size: 13px; line-height: 1.65; color: var(--gray-700); margin: 0; }
+
+    .gold-box {
+      background: var(--gold-20);
+      border-left: 4px solid var(--gold);
+      border-radius: 8px;
+      padding: 14px 16px;
+      margin: 14px 0;
+    }
+    .gold-box .hb-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .6px; color: #b8941c; margin-bottom: 4px; }
+    .gold-box p { font-size: 13px; line-height: 1.65; color: var(--gray-700); margin: 0; }
+
+    .stat-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      gap: 12px;
+      margin: 16px 0;
+    }
+    .stat-box {
+      background: var(--gray-50);
+      border: 1px solid var(--gray-200);
+      border-radius: 10px;
+      padding: 14px 12px;
+      text-align: center;
+    }
+    .stat-box .val { font-size: 26px; font-weight: 800; color: var(--navy); line-height: 1; }
+    .stat-box .val span { font-size: 14px; color: var(--teal); }
+    .stat-box .lbl { font-size: 11px; color: var(--gray-500); margin-top: 4px; line-height: 1.4; font-weight: 500; }
+
+    .cat-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 12px;
+      margin-top: 14px;
+    }
+    .cat-card {
+      background: var(--gray-50);
+      border: 1px solid var(--gray-200);
+      border-radius: 10px;
+      padding: 14px;
+    }
+    .cat-card .cat-icon { font-size: 22px; margin-bottom: 6px; }
+    .cat-card .cat-name { font-size: 13px; font-weight: 700; color: var(--navy); margin-bottom: 4px; }
+    .cat-card .cat-ex { font-size: 12px; color: var(--gray-500); line-height: 1.5; }
+
+    .steps-list { margin-top: 12px; }
+    .step-item {
+      display: flex; gap: 14px; align-items: flex-start;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--gray-100);
+    }
+    .step-item:last-child { border-bottom: none; }
+    .step-num {
+      width: 30px; height: 30px;
+      background: var(--navy);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--white); font-size: 12px; font-weight: 800;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+    .step-num.special { background: var(--teal); }
+    .step-body .step-title { font-size: 14px; font-weight: 700; color: var(--navy); margin-bottom: 3px; }
+    .step-body .step-desc { font-size: 13px; color: var(--gray-600, #4b5563); line-height: 1.6; }
+
+    /* Risk Matrix */
+    .risk-matrix-wrap { overflow-x: auto; margin-top: 14px; }
+    .risk-matrix {
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid var(--gray-200);
+      width: 100%;
+      min-width: 320px;
+    }
+    .rm-row { display: flex; }
+    .rm-axis-y {
+      width: 36px; min-height: 36px;
+      background: var(--gray-100);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 9px; font-weight: 700; color: var(--gray-500);
+      text-transform: uppercase;
+      letter-spacing: .4px;
+      border-right: 1px solid var(--gray-200);
+      writing-mode: vertical-rl;
+      text-orientation: mixed;
+    }
+    .rm-col-header {
+      flex: 1; min-height: 32px;
+      background: var(--gray-100);
+      border-bottom: 1px solid var(--gray-200);
+      border-right: 1px solid var(--gray-200);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 10px; font-weight: 700; color: var(--gray-600, #4b5563);
+      text-transform: uppercase; letter-spacing: .4px;
+    }
+    .rm-cell {
+      flex: 1; min-height: 64px;
+      border-right: 1px solid rgba(255,255,255,.25);
+      border-bottom: 1px solid rgba(255,255,255,.25);
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      font-size: 11px; font-weight: 700; color: var(--white);
+      text-align: center; padding: 6px;
+      transition: opacity .2s;
+      cursor: pointer;
+      line-height: 1.3;
+    }
+    .rm-cell:hover { opacity: .8; }
+    .rm-cell.green  { background: #10B981; }
+    .rm-cell.yellow { background: #F59E0B; }
+    .rm-cell.red    { background: #EF4444; }
+    .rm-cell .rm-score { font-size: 18px; font-weight: 800; }
+    .rm-row-label {
+      width: 36px;
+      background: var(--gray-100);
+      border-right: 1px solid var(--gray-200);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 10px; font-weight: 700; color: var(--gray-500);
+    }
+
+    /* 4T Cards */
+    .four-t-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 14px;
+      margin-top: 16px;
+    }
+    .t-card {
+      border-radius: 12px;
+      padding: 18px;
+      border: 1.5px solid;
+    }
+    .t-card.tolerate { background: #f0fdf4; border-color: #86efac; }
+    .t-card.treat    { background: #eff6ff; border-color: #93c5fd; }
+    .t-card.transfer { background: var(--gold-20); border-color: #fcd34d; }
+    .t-card.terminate{ background: #fef2f2; border-color: #fca5a5; }
+    .t-icon { font-size: 24px; margin-bottom: 8px; }
+    .t-name { font-size: 15px; font-weight: 800; color: var(--navy); margin-bottom: 4px; }
+    .t-sub  { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .4px; color: var(--gray-500); margin-bottom: 8px; }
+    .t-desc { font-size: 13px; color: var(--gray-700); line-height: 1.6; }
+    .t-ex   { font-size: 12px; color: var(--gray-500); margin-top: 6px; font-style: italic; line-height: 1.5; }
+
+    /* Case study cards */
+    .case-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; margin-top: 16px; }
+    .case-card {
+      border-radius: 14px;
+      overflow: hidden;
+      border: 1px solid var(--gray-200);
+      box-shadow: var(--shadow);
+    }
+    .case-head {
+      padding: 16px 18px 12px;
+      display: flex; align-items: center; gap: 12px;
+    }
+    .case-logo {
+      width: 42px; height: 42px;
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+    .case-logo.kodak     { background: #fef3c7; }
+    .case-logo.block     { background: #fde8d8; }
+    .case-logo.nokia     { background: #dbeafe; }
+    .case-info .case-company { font-size: 16px; font-weight: 800; color: var(--navy); }
+    .case-info .case-year    { font-size: 11px; color: var(--gray-400); font-weight: 500; }
+    .case-body { padding: 0 18px 18px; }
+    .case-timeline { display: flex; flex-direction: column; gap: 8px; margin-bottom: 12px; }
+    .case-event {
+      display: flex; gap: 10px; align-items: flex-start;
+    }
+    .ce-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      margin-top: 4px;
+    }
+    .ce-dot.peak   { background: var(--green); }
+    .ce-dot.miss   { background: var(--gold); }
+    .ce-dot.crash  { background: var(--red); }
+    .case-event .ce-text { font-size: 12px; color: var(--gray-600, #4b5563); line-height: 1.5; }
+    .case-lesson {
+      background: var(--gray-50);
+      border-radius: 8px;
+      padding: 10px 12px;
+      font-size: 12px;
+      color: var(--navy);
+      font-weight: 600;
+      line-height: 1.5;
+    }
+    .case-lesson::before { content: "💡 "; }
+
+    /* Completion button */
+    .btn-complete {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: linear-gradient(135deg, var(--navy), var(--navy-80));
+      color: var(--white);
+      font-size: 14px; font-weight: 700;
+      padding: 12px 28px;
+      border-radius: 10px;
+      transition: transform .15s, box-shadow .15s;
+      margin-top: 8px;
+    }
+    .btn-complete:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(10,61,98,.25); }
+    .btn-complete.done {
+      background: var(--green);
+    }
+    .btn-next {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: linear-gradient(135deg, var(--teal), var(--cyan));
+      color: var(--white);
+      font-size: 14px; font-weight: 700;
+      padding: 12px 28px;
+      border-radius: 10px;
+      transition: transform .15s, box-shadow .15s;
+      margin-top: 8px; margin-left: 10px;
+    }
+    .btn-next:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(15,163,177,.3); }
+
+    /* ─── QUIZ COMPONENT ─── */
+    .quiz-section {
+      background: var(--white);
+      border-radius: var(--radius);
+      border: 2px solid var(--gold);
+      padding: 24px 28px;
+      margin-top: 20px;
+      margin-bottom: 16px;
+      animation: fadeIn .5s ease both;
+    }
+    .quiz-header {
+      display: flex; align-items: center; gap: 12px;
+      margin-bottom: 20px;
+    }
+    .quiz-icon {
+      width: 42px; height: 42px;
+      background: var(--gold-20);
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px;
+    }
+    .quiz-header .quiz-tag { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .6px; color: #b8941c; margin-bottom: 3px; }
+    .quiz-header h3 { font-size: 18px; font-weight: 800; color: var(--navy); }
+    .quiz-q-card {
+      background: var(--gray-50);
+      border: 1px solid var(--gray-200);
+      border-radius: 10px;
+      padding: 18px;
+      margin-bottom: 14px;
+    }
+    .quiz-q-num { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; color: var(--teal); margin-bottom: 6px; }
+    .quiz-q-text { font-size: 14px; font-weight: 600; color: var(--gray-900); line-height: 1.6; margin-bottom: 14px; }
+    .quiz-options { display: flex; flex-direction: column; gap: 8px; }
+    .quiz-opt {
+      display: flex; align-items: center; gap: 10px;
+      padding: 10px 14px;
+      border-radius: 8px;
+      border: 1.5px solid var(--gray-200);
+      cursor: pointer;
+      transition: border-color .15s, background .15s;
+      background: var(--white);
+    }
+    .quiz-opt:hover { border-color: var(--teal); background: var(--teal-20); }
+    .quiz-opt.selected { border-color: var(--teal); background: var(--teal-20); }
+    .quiz-opt.correct  { border-color: var(--green); background: var(--green-10); }
+    .quiz-opt.wrong    { border-color: var(--red); background: var(--red-10); }
+    .opt-bubble {
+      width: 20px; height: 20px;
+      border-radius: 50%;
+      border: 2px solid var(--gray-300);
+      flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 10px;
+      transition: all .15s;
+    }
+    .quiz-opt.selected .opt-bubble { border-color: var(--teal); background: var(--teal); color: var(--white); }
+    .quiz-opt.correct  .opt-bubble { border-color: var(--green); background: var(--green); color: var(--white); }
+    .quiz-opt.wrong    .opt-bubble { border-color: var(--red); background: var(--red); color: var(--white); }
+    .opt-text { font-size: 13px; color: var(--gray-700); line-height: 1.5; }
+    .quiz-opt.correct  .opt-text { color: #065f46; font-weight: 600; }
+    .quiz-opt.wrong    .opt-text { color: #991b1b; }
+    .btn-submit-quiz {
+      display: flex; align-items: center; gap: 8px;
+      background: var(--navy);
+      color: var(--white);
+      font-size: 14px; font-weight: 700;
+      padding: 12px 28px;
+      border-radius: 10px;
+      transition: transform .15s, box-shadow .15s;
+      margin-top: 8px;
+    }
+    .btn-submit-quiz:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(10,61,98,.25); }
+    .btn-submit-quiz:disabled { opacity: .5; cursor: not-allowed; transform: none; box-shadow: none; }
+    .quiz-result {
+      background: var(--gray-50);
+      border: 1px solid var(--gray-200);
+      border-radius: 12px;
+      padding: 20px 24px;
+      margin-top: 16px;
+      animation: popIn .4s ease both;
+    }
+    .qr-score-row { display: flex; align-items: center; gap: 16px; margin-bottom: 16px; }
+    .qr-score-circle {
+      width: 64px; height: 64px;
+      border-radius: 50%;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .qr-score-circle.good { background: var(--green); }
+    .qr-score-circle.avg  { background: #F59E0B; }
+    .qr-score-circle.low  { background: var(--red); }
+    .qr-score-circle .score-num { font-size: 20px; font-weight: 800; color: var(--white); line-height: 1; }
+    .qr-score-circle .score-denom { font-size: 10px; color: rgba(255,255,255,.75); }
+    .qr-msg .qr-title { font-size: 16px; font-weight: 800; color: var(--navy); margin-bottom: 3px; }
+    .qr-msg .qr-sub   { font-size: 13px; color: var(--gray-500); line-height: 1.5; }
+
+    /* ─── DASHBOARD ─── */
+    .dashboard-page {
+      flex: 1;
+      overflow-y: auto;
+      padding: 32px;
+      background: var(--gray-50);
+    }
+    .dash-top { margin-bottom: 28px; }
+    .dash-greeting { font-size: 22px; font-weight: 800; color: var(--navy); }
+    .dash-greeting span { color: var(--teal); }
+    .dash-sub { font-size: 14px; color: var(--gray-500); margin-top: 4px; }
+    .progress-hero {
+      background: linear-gradient(135deg, var(--navy) 0%, #0d5a8e 100%);
+      border-radius: 16px;
+      padding: 24px 28px;
+      margin-bottom: 28px;
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 20px;
+      overflow: hidden;
+      position: relative;
+    }
+    .progress-hero::after {
+      content: '';
+      position: absolute; right: -30px; top: -30px;
+      width: 140px; height: 140px;
+      background: rgba(242,201,76,.08);
+      border-radius: 50%;
+    }
+    .ph-left { position: relative; z-index: 1; }
+    .ph-left .ph-tag { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .7px; color: var(--teal); margin-bottom: 6px; }
+    .ph-left h3 { font-size: 18px; font-weight: 800; color: var(--white); margin-bottom: 4px; }
+    .ph-left p  { font-size: 13px; color: rgba(255,255,255,.6); }
+    .ph-bar-area { width: 100%; max-width: 280px; position: relative; z-index: 1; }
+    .ph-bar-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+    .ph-bar-top span { font-size: 12px; color: rgba(255,255,255,.7); font-weight: 600; }
+    .ph-bar-top strong { font-size: 18px; color: var(--white); font-weight: 800; }
+    .ph-bar-outer { height: 8px; background: rgba(255,255,255,.15); border-radius: 4px; overflow: hidden; }
+    .ph-bar-inner { height: 100%; background: linear-gradient(90deg, var(--teal), var(--cyan)); border-radius: 4px; transition: width .6s ease; }
+    .chapter-section-title {
+      font-size: 13px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: .6px;
+      color: var(--gray-500);
+      margin-bottom: 14px;
+    }
+    .chapters-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 14px;
+    }
+    .chapter-card {
+      background: var(--white);
+      border-radius: 14px;
+      border: 1.5px solid var(--gray-200);
+      padding: 18px;
+      cursor: pointer;
+      transition: transform .18s, box-shadow .18s, border-color .18s;
+      display: flex; gap: 14px; align-items: flex-start;
+      box-shadow: var(--shadow);
+    }
+    .chapter-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-lg); border-color: var(--teal); }
+    .chapter-card.done  { border-color: var(--green); background: #f0fdf4; }
+    .chapter-card.active{ border-color: var(--teal); background: var(--teal-20); }
+    .cc-icon {
+      width: 44px; height: 44px;
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px;
+      flex-shrink: 0;
+    }
+    .cc-icon.default { background: var(--gray-100); }
+    .cc-icon.done    { background: var(--green-10); }
+    .cc-body { flex: 1; min-width: 0; }
+    .cc-num { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; color: var(--gray-400); margin-bottom: 3px; }
+    .cc-title { font-size: 14px; font-weight: 700; color: var(--navy); line-height: 1.3; margin-bottom: 4px; }
+    .cc-meta { display: flex; gap: 6px; align-items: center; }
+    .cc-time { font-size: 11px; color: var(--gray-400); }
+    .cc-badge-quiz { font-size: 9px; font-weight: 700; background: var(--gold-20); color: #b8941c; padding: 2px 7px; border-radius: 4px; text-transform: uppercase; letter-spacing: .3px; border: 1px solid #fcd34d; }
+    .cc-badge-done { font-size: 9px; font-weight: 700; background: var(--green-10); color: #065f46; padding: 2px 7px; border-radius: 4px; text-transform: uppercase; }
+
+    /* Completion screen */
+    .complete-screen {
+      text-align: center;
+      padding: 60px 32px;
+      animation: fadeIn .5s ease both;
+    }
+    .complete-medal { font-size: 72px; margin-bottom: 16px; animation: popIn .5s ease both; }
+    .complete-screen h2 { font-size: 28px; font-weight: 800; color: var(--navy); margin-bottom: 8px; }
+    .complete-screen p  { font-size: 15px; color: var(--gray-500); max-width: 420px; margin: 0 auto; line-height: 1.7; }
+    .complete-stats { display: flex; justify-content: center; gap: 32px; margin: 28px 0; }
+    .complete-stat .cs-val { font-size: 36px; font-weight: 800; color: var(--teal); }
+    .complete-stat .cs-lbl { font-size: 12px; color: var(--gray-400); margin-top: 2px; }
+
+    /* three circles */
+    .three-circles {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-top: 14px;
+    }
+    .circle-card {
+      border-radius: 12px;
+      padding: 16px;
+      text-align: center;
+    }
+    .circle-card.owner  { background: #eff6ff; border: 1.5px solid #93c5fd; }
+    .circle-card.family { background: var(--gold-20); border: 1.5px solid #fcd34d; }
+    .circle-card.biz    { background: var(--teal-20); border: 1.5px solid var(--teal); }
+    .circle-card .ci   { font-size: 22px; margin-bottom: 6px; }
+    .circle-card .cn   { font-size: 13px; font-weight: 700; color: var(--navy); margin-bottom: 4px; }
+    .circle-card .cd   { font-size: 11px; color: var(--gray-500); line-height: 1.5; }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .sidebar { display: none; }
+      .content-scroll { padding: 16px; }
+      .dashboard-page { padding: 16px; }
+      .login-header { padding: 24px 22px 20px; }
+      .login-body { padding: 24px 22px 28px; }
+      .chapters-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div id="app"></div>
+
+  <script>
+    /* ═══════════════════════════════════════════════
+       STATE
+    ═══════════════════════════════════════════════ */
+    const state = {
+      view: 'login',
+      chId: 1,
+      done: new Set(),
+      quizDone: {},   // chId: { score, total }
+      qSel: {},       // chId: { qi: optIdx }
+      qSubmitted: {}  // chId: true
+    };
+
+    /* ═══════════════════════════════════════════════
+       CHAPTERS DATA
+    ═══════════════════════════════════════════════ */
+    const CHAPTERS = [
+      {
+        id: 1, icon: '🎯', time: '5 menit',
+        tag: 'Bab 1', title: 'Risiko itu Sebenarnya Apa?',
+        content: () => `
+          <div class="content-card fade-in">
+            <h3>Analogi Sederhana</h3>
+            <p>Bayangkan kamu akan menyeberang jalan. Ada kemungkinan kamu tertabung kendaraan yang melintas. Kemungkinan itulah yang disebut risiko. Risiko bukan kejadian buruknya itu sendiri, melainkan <strong>kemungkinan kejadian buruk terjadi</strong>, plus seberapa parah akibatnya kalau benar terjadi.</p>
+            <div class="highlight-box">
+              <div class="hb-label">Definisi Resmi (ISO 31000)</div>
+              <p>Risiko adalah <strong>pengaruh ketidakpastian terhadap tujuan.</strong> Artinya, setiap kali ada rencana atau target, selalu ada hal yang bisa membuat hasilnya meleset, entah ke arah lebih buruk (ancaman) maupun ke arah yang justru lebih baik dari dugaan (peluang).</p>
+            </div>
+          </div>
+          <div class="content-card fade-in">
+            <h3>Dua Kata Kunci yang Akan Selalu Muncul</h3>
+            <div class="cat-grid">
+              <div class="cat-card">
+                <div class="cat-icon">📊</div>
+                <div class="cat-name">Kemungkinan</div>
+                <div class="cat-ex">Seberapa besar peluang sesuatu terjadi. Bahasa teknisnya: <em>likelihood</em> atau <em>probabilitas</em>.</div>
+              </div>
+              <div class="cat-card">
+                <div class="cat-icon">💥</div>
+                <div class="cat-name">Dampak</div>
+                <div class="cat-ex">Seberapa besar kerugian atau gangguan kalau hal itu sampai terjadi. Bahasa teknisnya: <em>impact</em> atau <em>consequence</em>.</div>
+              </div>
+            </div>
+            <div class="gold-box" style="margin-top:14px">
+              <div class="hb-label">Rumus Mental</div>
+              <p>Risiko yang <strong>kemungkinannya besar + dampaknya besar</strong> adalah yang paling perlu diwaspadai. Risiko yang kemungkinannya kecil + dampaknya kecil boleh dibiarkan dulu. Begitulah cara kita menentukan prioritas.</p>
+            </div>
+          </div>
+          <div class="content-card fade-in">
+            <h3>Kotak Istilah Wajib Tahu</h3>
+            <ul>
+              <li><strong>Manajemen:</strong> kegiatan mengatur sesuatu secara sengaja dan terencana.</li>
+              <li><strong>Mitigasi:</strong> tindakan untuk memperkecil kemungkinan atau dampak sebuah risiko. Kalau menyeberang lewat jembatan penyeberangan, itu mitigasi.</li>
+              <li><strong>Ancaman:</strong> risiko yang berpotensi merugikan.</li>
+              <li><strong>Peluang:</strong> ketidakpastian yang kalau terwujud justru menguntungkan.</li>
+            </ul>
+          </div>`
+      },
+      {
+        id: 2, icon: '💡', time: '6 menit',
+        tag: 'Bab 2', title: 'Kenapa Manajemen Risiko Penting?',
+        content: () => `
+          <div class="content-card fade-in">
+            <h3>Bukan Sekadar Teori Korporasi</h3>
+            <p>Manajemen risiko adalah cara yang tertib dan masuk akal untuk mengenali apa saja yang bisa salah, menilai seberapa gawat, lalu memutuskan apa yang akan dilakukan terhadapnya. Tujuan akhirnya bukan sekadar menghindari kerugian. Tujuannya adalah <strong>menciptakan dan melindungi nilai.</strong></p>
+            <p>Bayangkan dua pemilik warung yang bersebelahan. Yang satu punya cadangan bahan dari dua pemasok berbeda. Yang satunya bergantung pada satu pemasok. Ketika pemasok tunggal itu tutup mendadak, warung pertama tetap buka, warung kedua terpaksa tutup. Itulah perbedaan yang dibuat manajemen risiko.</p>
+          </div>
+          <div class="content-card fade-in">
+            <h3>Data yang Bicara</h3>
+            <div class="stat-row">
+              <div class="stat-box">
+                <div class="val">70<span>%</span></div>
+                <div class="lbl">Lebih mungkin mencapai tujuan strategis</div>
+              </div>
+              <div class="stat-box">
+                <div class="val">20<span>%</span></div>
+                <div class="lbl">Lebih sedikit gangguan operasional</div>
+              </div>
+            </div>
+            <p style="margin-top:12px;font-size:13px;color:var(--gray-500)">Perusahaan dengan kerangka manajemen risiko yang jelas secara konsisten lebih stabil dibandingkan yang tidak punya. (Sumber: PXP, 2026)</p>
+          </div>
+          <div class="content-card fade-in">
+            <h3>Empat Manfaat Nyata</h3>
+            <div class="cat-grid">
+              <div class="cat-card">
+                <div class="cat-icon">🧠</div>
+                <div class="cat-name">Keputusan Lebih Baik</div>
+                <div class="cat-ex">Risiko diperhitungkan sebelum bertindak, bukan diratapi setelah kejadian.</div>
+              </div>
+              <div class="cat-card">
+                <div class="cat-icon">🎯</div>
+                <div class="cat-name">Sumber Daya Lebih Tepat</div>
+                <div class="cat-ex">Energi dan uang dialokasikan ke tempat yang benar berdasarkan prioritas risiko.</div>
+              </div>
+              <div class="cat-card">
+                <div class="cat-icon">🏋️</div>
+                <div class="cat-name">Lebih Tangguh</div>
+                <div class="cat-ex">Ketika kejutan datang, organisasi yang siap pulih jauh lebih cepat.</div>
+              </div>
+              <div class="cat-card">
+                <div class="cat-icon">🤝</div>
+                <div class="cat-name">Kepercayaan Tumbuh</div>
+                <div class="cat-ex">Pelanggan, mitra, dan karyawan lebih percaya pada usaha yang terlihat profesional dan siap.</div>
+              </div>
+            </div>
+          </div>
+          <div class="content-card fade-in">
+            <h3>Salah Kaprah yang Sering Terjadi</h3>
+            <div class="highlight-box">
+              <div class="hb-label">Mitos vs Kenyataan</div>
+              <p><strong>Mitos:</strong> Manajemen risiko berarti menghindari semua risiko dan tidak berani bergerak.<br>
+              <strong>Kenyataan:</strong> Manajemen risiko berarti mengelola risiko dengan sadar, tahu risiko mana yang layak diambil dan mana yang tidak. Berani mengambil risiko yang tepat justru menghasilkan pertumbuhan.</p>
+            </div>
+          </div>`
+      },
+      {
+        id: 3, icon: '📚', time: '10 menit',
+        tag: 'Bab 3', title: 'Dua Kerangka Dunia: ISO 31000 dan COSO ERM',
+        hasQuiz: true,
+        content: () => `
+          <div class="content-card fade-in">
+            <h3>ISO 31000: Panduan Utama Manajemen Risiko Internasional</h3>
+            <p>ISO 31000 adalah standar internasional manajemen risiko yang diterbitkan oleh <em>International Organization for Standardization</em>. Standar ini berlaku untuk organisasi apa pun, tidak peduli ukuran atau sektornya. Versi terbaru keluar tahun 2018, dibuat lebih sederhana dan fleksibel.</p>
+            <div class="gold-box">
+              <div class="hb-label">Catatan Penting</div>
+              <p>ISO 31000 <strong>tidak bisa disertifikasi.</strong> Tidak ada lembaga yang memberi cap "lulus ISO 31000" kepada perusahaan. Fungsinya adalah panduan dan praktik terbaik, bukan ujian.</p>
+            </div>
+            <p style="margin-top:12px;">ISO 31000 berdiri di atas <strong>tiga komponen</strong> yang saling menyangga:</p>
+            <div class="steps-list">
+              <div class="step-item">
+                <div class="step-num">1</div>
+                <div class="step-body">
+                  <div class="step-title">Prinsip</div>
+                  <div class="step-desc">Nilai-nilai dasar yang menentukan seperti apa manajemen risiko yang baik. Ada 8 prinsip: terintegrasi, terstruktur dan komprehensif, disesuaikan, inklusif, dinamis, memakai informasi terbaik, mempertimbangkan faktor manusia dan budaya, serta terus diperbaiki.</div>
+                </div>
+              </div>
+              <div class="step-item">
+                <div class="step-num">2</div>
+                <div class="step-body">
+                  <div class="step-title">Kerangka (Framework)</div>
+                  <div class="step-desc">Susunan organisasi dan kepemimpinan yang memastikan manajemen risiko benar-benar berjalan, bukan sekadar ada di atas kertas. Meliputi komitmen pimpinan, integrasi ke tata kelola, dan alokasi sumber daya.</div>
+                </div>
+              </div>
+              <div class="step-item">
+                <div class="step-num">3</div>
+                <div class="step-body">
+                  <div class="step-title">Proses</div>
+                  <div class="step-desc">Langkah-langkah praktis dari mengenali sampai menangani risiko secara sistematis. Ini yang akan kita pelajari detail di Bab 5.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="content-card fade-in">
+            <h3>COSO ERM: Risiko yang Menyatu dengan Strategi</h3>
+            <p>COSO ERM (<em>Enterprise Risk Management</em>) dikembangkan oleh <em>Committee of Sponsoring Organizations of the Treadway Commission</em> di Amerika. Versi terbaru terbit 2017, menekankan bahwa risiko harus dipikirkan sejak awal menyusun strategi, bukan setelah strategi jadi.</p>
+            <p>COSO ERM 2017 punya <strong>5 komponen</strong> dan <strong>20 prinsip</strong>. Lima komponennya adalah:</p>
+            <div class="cat-grid" style="margin-top:12px">
+              <div class="cat-card">
+                <div class="cat-icon">🏛️</div>
+                <div class="cat-name">1. Tata Kelola dan Budaya</div>
+                <div class="cat-ex">Teladan dari pimpinan dan budaya sadar risiko di seluruh organisasi.</div>
+              </div>
+              <div class="cat-card">
+                <div class="cat-icon">🗺️</div>
+                <div class="cat-name">2. Strategi dan Tujuan</div>
+                <div class="cat-ex">Risiko ikut dipertimbangkan saat menyusun strategi besar.</div>
+              </div>
+              <div class="cat-card">
+                <div class="cat-icon">⚡</div>
+                <div class="cat-name">3. Kinerja</div>
+                <div class="cat-ex">Identifikasi dan nilai risiko yang bisa mengganggu pencapaian target.</div>
+              </div>
+              <div class="cat-card">
+                <div class="cat-icon">🔄</div>
+                <div class="cat-name">4. Peninjauan dan Revisi</div>
+                <div class="cat-ex">Cek apakah penanganan masih relevan dan perbaiki terus.</div>
+              </div>
+              <div class="cat-card">
+                <div class="cat-icon">📡</div>
+                <div class="cat-name">5. Informasi dan Pelaporan</div>
+                <div class="cat-ex">Alirkan informasi risiko ke pihak yang tepat secara transparan.</div>
+              </div>
+            </div>
+            <div class="highlight-box" style="margin-top:16px">
+              <div class="hb-label">Analogi Menarik</div>
+              <p>COSO menggambarkan kelima komponen ini seperti <strong>pita yang melilit seluruh perjalanan strategi perusahaan</strong>, mirip bentuk untaian DNA. Maksudnya: risiko harus tertanam di tubuh organisasi, bukan ditempel belakangan.</p>
+            </div>
+          </div>
+          <div class="content-card fade-in">
+            <h3>ISO vs COSO: Pilih yang Mana?</h3>
+            <p>Jawabannya: tidak perlu memilih. Keduanya saling melengkapi.</p>
+            <div class="cat-grid">
+              <div class="cat-card">
+                <div class="cat-icon">🛠️</div>
+                <div class="cat-name">ISO 31000</div>
+                <div class="cat-ex">Cocok sebagai cara berpikir dan langkah kerja sehari-hari. Lebih ringkas dan universal untuk semua ukuran organisasi.</div>
+              </div>
+              <div class="cat-card">
+                <div class="cat-icon">🏢</div>
+                <div class="cat-name">COSO ERM</div>
+                <div class="cat-ex">Lebih kaya untuk mengaitkan risiko dengan strategi besar dan tata kelola perusahaan. Favorit di perusahaan besar dan lembaga keuangan.</div>
+              </div>
+            </div>
+            <p style="margin-top:12px;font-size:13px;color:var(--gray-500)">Untuk usaha kecil: cukup ambil semangat ISO 31000 yang disederhanakan. Untuk perusahaan besar dengan tata kelola kompleks: pakai keduanya berdampingan.</p>
+          </div>`
+      },
+      {
+        id: 4, icon: '🗂️', time: '7 menit',
+        tag: 'Bab 4', title: 'Tujuh Jenis Risiko yang Dihadapi Usaha',
+        content: () => `
+          <div class="content-card fade-in">
+            <h3>Kenapa Perlu Dikategorikan?</h3>
+            <p>Pengelompokan risiko membantu kita mencari risiko secara sistematis, bukan asal ingat. Kalau sudah tahu kategorinya, kita bisa mencentang satu per satu: "sudah pikirkan risiko pasar? sudah. risiko hukum? belum." Tujuh kategori yang paling umum dipakai:</p>
+          </div>
+          <div class="content-card fade-in">
+            <h3>Peta Risiko Bisnis</h3>
+            <div class="cat-grid">
+              <div class="cat-card">
+                <div class="cat-icon">🗺️</div>
+                <div class="cat-name">1. Risiko Strategis</div>
+                <div class="cat-ex">Ancaman terhadap arah besar usaha. Contoh: pesaing baru yang lebih murah, perubahan selera pelanggan, teknologi baru yang membuat produk kita ketinggalan zaman.</div>
+              </div>
+              <div class="cat-card">
+                <div class="cat-icon">⚙️</div>
+                <div class="cat-name">2. Risiko Operasional</div>
+                <div class="cat-ex">Gangguan pada kegiatan sehari-hari. Contoh: mesin rusak, karyawan kunci resign mendadak, kesalahan manusia, pasokan bahan baku tersendat.</div>
+              </div>
+              <div class="cat-card">
+                <div class="cat-icon">💰</div>
+                <div class="cat-name">3. Risiko Keuangan</div>
+                <div class="cat-ex">Hal yang langsung memukul uang. Contoh: arus kas seret, pelanggan menunggak bayar, utang membengkak, atau kurs naik turun untuk bisnis impor.</div>
+              </div>
+              <div class="cat-card">
+                <div class="cat-icon">⚖️</div>
+                <div class="cat-name">4. Risiko Kepatuhan</div>
+                <div class="cat-ex">Masalah dengan aturan dan hukum. Contoh: izin usaha tidak lengkap, melanggar regulasi, terkena denda, atau tersangkut gugatan.</div>
+              </div>
+              <div class="cat-card">
+                <div class="cat-icon">🌟</div>
+                <div class="cat-name">5. Risiko Reputasi</div>
+                <div class="cat-ex">Kerusakan nama baik. Contoh: viral karena pelayanan buruk, produk bermasalah, atau ulasan negatif yang membanjiri platform.</div>
+              </div>
+              <div class="cat-card">
+                <div class="cat-icon">🔐</div>
+                <div class="cat-name">6. Risiko Teknologi dan Siber</div>
+                <div class="cat-ex">Ancaman dari sisi sistem digital. Contoh: data dicuri, sistem diretas, akun marketplace kena pembatasan tiba-tiba.</div>
+              </div>
+              <div class="cat-card">
+                <div class="cat-icon">🌍</div>
+                <div class="cat-name">7. Risiko Eksternal</div>
+                <div class="cat-ex">Hal di luar kendali kita. Contoh: bencana alam, pandemi, krisis ekonomi, kebijakan pemerintah yang berubah.</div>
+              </div>
+            </div>
+          </div>
+          <div class="content-card fade-in">
+            <h3>Satu Risiko Bisa Menyentuh Banyak Kategori</h3>
+            <div class="highlight-box">
+              <div class="hb-label">Contoh Nyata</div>
+              <p>Pemasok tunggal yang tiba-tiba bangkrut bisa jadi <strong>risiko operasional</strong> (produksi terhenti), <strong>risiko keuangan</strong> (omzet turun), sekaligus <strong>risiko reputasi</strong> (pelanggan kecewa karena pesanan terlambat). Itulah kenapa memetakan risiko harus dilakukan lintas kategori.</p>
+            </div>
+          </div>`
+      },
+      {
+        id: 5, icon: '🔄', time: '8 menit',
+        tag: 'Bab 5', title: 'Proses Manajemen Risiko Langkah demi Langkah',
+        content: () => `
+          <div class="content-card fade-in">
+            <h3>Tujuh Langkah yang Diulang Terus</h3>
+            <p>Ini adalah jantung praktiknya. Prosesnya bukan sekali jadi, melainkan siklus yang berputar terus seiring usaha berkembang.</p>
+            <div class="highlight-box">
+              <div class="hb-label">Ingat Ini</div>
+              <p><strong>Komunikasi dan konsultasi</strong> bukan langkah berurutan. Ini adalah benang merah yang menemani <em>semua</em> langkah lain. Sejak awal sampai akhir, ajak bicara orang-orang yang terlibat.</p>
+            </div>
+            <div class="steps-list" style="margin-top:14px">
+              <div class="step-item">
+                <div class="step-num special">0</div>
+                <div class="step-body">
+                  <div class="step-title">Komunikasi dan Konsultasi (Sepanjang Proses)</div>
+                  <div class="step-desc">Libatkan semua pihak yang relevan supaya ada keterbukaan, pemahaman bersama, dan tidak ada yang kaget saat risiko benar terjadi.</div>
+                </div>
+              </div>
+              <div class="step-item">
+                <div class="step-num">1</div>
+                <div class="step-body">
+                  <div class="step-title">Tetapkan Ruang Lingkup, Konteks, dan Kriteria</div>
+                  <div class="step-desc">Tentukan dulu: kita sedang menilai risiko untuk apa? Batasnya sampai mana? Seberapa besar risiko yang masih bisa kita terima? Di sinilah perusahaan menetapkan "selera risiko".</div>
+                </div>
+              </div>
+              <div class="step-item">
+                <div class="step-num">2</div>
+                <div class="step-body">
+                  <div class="step-title">Identifikasi Risiko</div>
+                  <div class="step-desc">Kumpulkan dan tulis semua hal yang bisa salah. Lewat diskusi tim, analisis SWOT, atau membayangkan berbagai skenario buruk. Pada tahap ini jangan menyaring dulu, tulis sebanyak-banyaknya.</div>
+                </div>
+              </div>
+              <div class="step-item">
+                <div class="step-num">3</div>
+                <div class="step-body">
+                  <div class="step-title">Analisis Risiko</div>
+                  <div class="step-desc">Untuk tiap risiko, perkirakan: seberapa besar kemungkinannya terjadi? Seberapa besar dampaknya kalau terjadi? Hasilnya adalah gambaran profil risiko.</div>
+                </div>
+              </div>
+              <div class="step-item">
+                <div class="step-num">4</div>
+                <div class="step-body">
+                  <div class="step-title">Evaluasi Risiko</div>
+                  <div class="step-desc">Bandingkan hasil analisis dengan batas yang sudah ditetapkan. Mana yang harus segera ditangani, mana yang bisa menunggu? Ini soal menentukan prioritas.</div>
+                </div>
+              </div>
+              <div class="step-item">
+                <div class="step-num">5</div>
+                <div class="step-body">
+                  <div class="step-title">Perlakuan Risiko</div>
+                  <div class="step-desc">Pilih dan jalankan tindakan untuk setiap risiko prioritas. Ada empat pilihan tindakan (dibahas di Bab 7 tentang konsep 4T).</div>
+                </div>
+              </div>
+              <div class="step-item">
+                <div class="step-num">6</div>
+                <div class="step-body">
+                  <div class="step-title">Pemantauan dan Peninjauan</div>
+                  <div class="step-desc">Keadaan berubah, jadi risiko juga berubah. Cek ulang secara berkala apakah penanganan masih ampuh dan apakah ada risiko baru yang muncul.</div>
+                </div>
+              </div>
+              <div class="step-item">
+                <div class="step-num">7</div>
+                <div class="step-body">
+                  <div class="step-title">Pencatatan dan Pelaporan</div>
+                  <div class="step-desc">Dokumentasikan semuanya secara rapi supaya bisa dipelajari dan dipertanggungjawabkan. Ini adalah bahan untuk tinjauan di masa mendatang.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="content-card fade-in">
+            <h3>Empat Pilar Ringkas</h3>
+            <div class="stat-row">
+              <div class="stat-box"><div class="val" style="font-size:18px">Identifikasi</div><div class="lbl">Temukan semua yang bisa salah</div></div>
+              <div class="stat-box"><div class="val" style="font-size:18px">Penilaian</div><div class="lbl">Ukur kemungkinan dan dampak</div></div>
+              <div class="stat-box"><div class="val" style="font-size:18px">Pengendalian</div><div class="lbl">Putuskan dan jalankan tindakan</div></div>
+              <div class="stat-box"><div class="val" style="font-size:18px">Pemantauan</div><div class="lbl">Pantau dan perbaiki terus</div></div>
+            </div>
+          </div>`
+      },
+      {
+        id: 6, icon: '🧰', time: '8 menit',
+        tag: 'Bab 6', title: 'Dua Alat Kerja Wajib Dikenal',
+        content: () => `
+          <div class="content-card fade-in">
+            <h3>Alat 1: Matriks Risiko</h3>
+            <p>Matriks risiko adalah tabel kotak-kotak yang memetakan risiko berdasarkan dua sumbu: <strong>kemungkinan</strong> di satu sisi, dan <strong>dampak</strong> di sisi lain. Risiko di kotak merah dikerjakan duluan. Yang hijau bisa menunggu.</p>
+            <div class="risk-matrix-wrap">
+              <table class="risk-matrix">
+                <tr>
+                  <td class="rm-axis-y" rowspan="4">KEMUNGKINAN</td>
+                  <td class="rm-col-header">Dampak: Kecil</td>
+                  <td class="rm-col-header">Dampak: Sedang</td>
+                  <td class="rm-col-header">Dampak: Besar</td>
+                </tr>
+                <tr>
+                  <td class="rm-row-label">Tinggi</td>
+                  <td class="rm-cell yellow">⚠️<br><div class="rm-score">6</div><small>Sedang</small></td>
+                  <td class="rm-cell red">🔴<br><div class="rm-score">9</div><small>Tinggi</small></td>
+                  <td class="rm-cell red">🚨<br><div class="rm-score">9</div><small>Kritis</small></td>
+                </tr>
+                <tr>
+                  <td class="rm-row-label">Sedang</td>
+                  <td class="rm-cell green">✅<br><div class="rm-score">3</div><small>Rendah</small></td>
+                  <td class="rm-cell yellow">⚠️<br><div class="rm-score">6</div><small>Sedang</small></td>
+                  <td class="rm-cell red">🔴<br><div class="rm-score">9</div><small>Tinggi</small></td>
+                </tr>
+                <tr>
+                  <td class="rm-row-label">Rendah</td>
+                  <td class="rm-cell green">✅<br><div class="rm-score">1</div><small>Rendah</small></td>
+                  <td class="rm-cell green">✅<br><div class="rm-score">3</div><small>Rendah</small></td>
+                  <td class="rm-cell yellow">⚠️<br><div class="rm-score">6</div><small>Sedang</small></td>
+                </tr>
+              </table>
+            </div>
+            <div class="highlight-box" style="margin-top:14px">
+              <div class="hb-label">Cara Membaca Matriks</div>
+              <p>Klik tiap kotak dan bayangkan risikomu ada di sana. Kotak <strong style="color:#EF4444">merah</strong>: harus segera ditangani. Kotak <strong style="color:#F59E0B">kuning</strong>: pantau dan siapkan rencana. Kotak <strong style="color:#10B981">hijau</strong>: boleh diterima, pantau berkala.</p>
+            </div>
+          </div>
+          <div class="content-card fade-in">
+            <h3>Alat 2: Daftar Risiko (Risk Register)</h3>
+            <p>Daftar risiko adalah catatan, bisa berupa tabel di buku atau spreadsheet, yang berisi semua risiko beserta detailnya. Ini adalah dokumen hidup yang ditinjau berkala.</p>
+            <div style="overflow-x:auto;margin-top:12px">
+              <table style="width:100%;border-collapse:collapse;font-size:12px">
+                <thead>
+                  <tr style="background:var(--navy);color:white">
+                    <th style="padding:10px 12px;text-align:left;border-radius:8px 0 0 0">Nama Risiko</th>
+                    <th style="padding:10px 12px;text-align:center">Kategori</th>
+                    <th style="padding:10px 12px;text-align:center">Kemung.</th>
+                    <th style="padding:10px 12px;text-align:center">Dampak</th>
+                    <th style="padding:10px 12px;text-align:center">Skor</th>
+                    <th style="padding:10px 12px;text-align:left;border-radius:0 8px 0 0">Tindakan</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr style="background:var(--gray-50);border-bottom:1px solid var(--gray-200)">
+                    <td style="padding:9px 12px;font-weight:600;color:var(--gray-900)">Pemasok bahan habis</td>
+                    <td style="padding:9px 12px;text-align:center"><span style="background:#eff6ff;color:#1d4ed8;padding:2px 7px;border-radius:4px;font-weight:600">Operasional</span></td>
+                    <td style="padding:9px 12px;text-align:center;font-weight:700;color:#F59E0B">Sedang</td>
+                    <td style="padding:9px 12px;text-align:center;font-weight:700;color:#EF4444">Besar</td>
+                    <td style="padding:9px 12px;text-align:center"><span style="background:#fee2e2;color:#991b1b;padding:2px 8px;border-radius:4px;font-weight:800">9</span></td>
+                    <td style="padding:9px 12px;color:var(--gray-700)">Daftarkan 2 pemasok cadangan</td>
+                  </tr>
+                  <tr style="background:white;border-bottom:1px solid var(--gray-200)">
+                    <td style="padding:9px 12px;font-weight:600;color:var(--gray-900)">Akun marketplace ditangguhkan</td>
+                    <td style="padding:9px 12px;text-align:center"><span style="background:#fdf6d8;color:#b8941c;padding:2px 7px;border-radius:4px;font-weight:600">Teknologi</span></td>
+                    <td style="padding:9px 12px;text-align:center;font-weight:700;color:#10B981">Rendah</td>
+                    <td style="padding:9px 12px;text-align:center;font-weight:700;color:#EF4444">Besar</td>
+                    <td style="padding:9px 12px;text-align:center"><span style="background:#fef3c7;color:#92400e;padding:2px 8px;border-radius:4px;font-weight:800">6</span></td>
+                    <td style="padding:9px 12px;color:var(--gray-700)">Buka channel penjualan lain</td>
+                  </tr>
+                  <tr style="background:var(--gray-50)">
+                    <td style="padding:9px 12px;font-weight:600;color:var(--gray-900)">Karyawan kasir salah hitung</td>
+                    <td style="padding:9px 12px;text-align:center"><span style="background:#eff6ff;color:#1d4ed8;padding:2px 7px;border-radius:4px;font-weight:600">Operasional</span></td>
+                    <td style="padding:9px 12px;text-align:center;font-weight:700;color:#F59E0B">Sedang</td>
+                    <td style="padding:9px 12px;text-align:center;font-weight:700;color:#F59E0B">Sedang</td>
+                    <td style="padding:9px 12px;text-align:center"><span style="background:#fef3c7;color:#92400e;padding:2px 8px;border-radius:4px;font-weight:800">6</span></td>
+                    <td style="padding:9px 12px;color:var(--gray-700)">SOP penghitungan ulang & kasir sistem</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <p style="margin-top:12px;font-size:12px;color:var(--gray-400)">Contoh di atas adalah template sederhana. Kolom bisa ditambah: penanggung jawab, tenggat, dan status tindakan.</p>
+          </div>`
+      },
+      {
+        id: 7, icon: '🎮', time: '7 menit',
+        tag: 'Bab 7', title: 'Empat Cara Menangani Risiko: Konsep 4T',
+        hasQuiz: true,
+        content: () => `
+          <div class="content-card fade-in">
+            <h3>Setelah Tahu Prioritasnya, Apa Selanjutnya?</h3>
+            <p>Setelah matriks risiko menunjukkan mana yang paling gawat, ada empat pilihan tindakan. Dalam dunia manajemen risiko ini dikenal sebagai konsep <strong>4T: Tolerate, Treat, Transfer, Terminate.</strong> Dalam bahasa Indonesia kira-kira: Terima, Kurangi, Alihkan, Hentikan.</p>
+            <div class="four-t-grid">
+              <div class="t-card tolerate">
+                <div class="t-icon">✅</div>
+                <div class="t-name">Tolerate</div>
+                <div class="t-sub">Terima / Accept</div>
+                <div class="t-desc">Sadar risikonya ada, tapi sengaja dibiarkan karena dampaknya kecil, kemungkinannya rendah, atau biaya menanganinya lebih mahal dari manfaatnya.</div>
+                <div class="t-ex">Contoh: menerima sedikit tingkat pembatalan order ketimbang memperketat kebijakan sampai pelanggan kabur.</div>
+              </div>
+              <div class="t-card treat">
+                <div class="t-icon">🛠️</div>
+                <div class="t-name">Treat</div>
+                <div class="t-sub">Kurangi / Mitigasi</div>
+                <div class="t-desc">Lakukan sesuatu untuk memperkecil kemungkinan atau dampaknya. Ini pilihan paling sering dipakai dalam keseharian usaha.</div>
+                <div class="t-ex">Contoh: membuat SOP, memasang CCTV, mendaftarkan dua pemasok cadangan, atau menerapkan QC sebelum barang keluar.</div>
+              </div>
+              <div class="t-card transfer">
+                <div class="t-icon">🤝</div>
+                <div class="t-name">Transfer</div>
+                <div class="t-sub">Alihkan</div>
+                <div class="t-desc">Pindahkan sebagian beban risiko ke pihak lain. Cara paling umum adalah membeli asuransi, atau memindahkan tanggung jawab lewat kontrak.</div>
+                <div class="t-ex">Contoh: beli asuransi kebakaran untuk toko, atau buat perjanjian dengan jasa ekspedisi tentang ganti rugi barang rusak.</div>
+              </div>
+              <div class="t-card terminate">
+                <div class="t-icon">🚫</div>
+                <div class="t-name">Terminate</div>
+                <div class="t-sub">Hentikan / Hindari</div>
+                <div class="t-desc">Hentikan atau hindari kegiatan yang menimbulkan risiko itu sama sekali. Dipakai kalau risikonya terlalu tinggi dan tidak sebanding manfaatnya.</div>
+                <div class="t-ex">Contoh: memutuskan tidak masuk pasar di wilayah yang konfliknya tinggi, atau tidak jual produk yang rawan klaim hukum.</div>
+              </div>
+            </div>
+          </div>
+          <div class="content-card fade-in">
+            <h3>Kunci: Selera Risiko</h3>
+            <p>Pilihan mana yang dipakai bergantung pada <strong>selera risiko</strong> masing-masing usaha. Tanpa selera risiko yang jelas, memilih salah satu T jadi serba untung-untungan.</p>
+            <div class="cat-grid" style="margin-top:12px">
+              <div class="cat-card">
+                <div class="cat-icon">🍽️</div>
+                <div class="cat-name">Selera Risiko</div>
+                <div class="cat-ex">Seberapa besar risiko yang sengaja bersedia diambil demi mengejar tujuan usaha. Ini ditetapkan oleh pimpinan.</div>
+              </div>
+              <div class="cat-card">
+                <div class="cat-icon">🚧</div>
+                <div class="cat-name">Toleransi Risiko</div>
+                <div class="cat-ex">Batas sebenarnya: seberapa jauh penyimpangan dari rencana yang masih sanggup ditanggung tanpa usaha kolaps.</div>
+              </div>
+              <div class="cat-card">
+                <div class="cat-icon">💧</div>
+                <div class="cat-name">Risiko Sisa</div>
+                <div class="cat-ex">Risiko yang masih tersisa setelah ditangani. Hampir tidak ada risiko yang bisa hilang seratus persen.</div>
+              </div>
+            </div>
+          </div>`
+      },
+      {
+        id: 8, icon: '🏢', time: '6 menit',
+        tag: 'Bab 8', title: 'Penerapan di Perusahaan Besar',
+        content: () => `
+          <div class="content-card fade-in">
+            <h3>ERM di Skala Besar</h3>
+            <p>Di perusahaan besar, manajemen risiko berbentuk fungsi resmi yang melekat pada tata kelola. Pucuk pimpinan dan dewan direksi bertanggung jawab menetapkan kebijakan dan selera risiko, lalu menunjuk pemilik risiko untuk tiap risiko penting. Inilah yang disebut <strong>Enterprise Risk Management (ERM)</strong>, yaitu mengelola risiko satu perusahaan secara menyeluruh, bukan dipotong-potong per departemen.</p>
+          </div>
+          <div class="content-card fade-in">
+            <h3>Empat Ciri ERM di Perusahaan Besar</h3>
+            <div class="steps-list">
+              <div class="step-item">
+                <div class="step-num">1</div>
+                <div class="step-body">
+                  <div class="step-title">Risiko Masuk Sejak Penyusunan Strategi</div>
+                  <div class="step-desc">Bukan setelah strategi jadi baru ditanya "ada risikonya tidak?" Dari meja perencanaan, risiko sudah jadi bahan pertimbangan.</div>
+                </div>
+              </div>
+              <div class="step-item">
+                <div class="step-num">2</div>
+                <div class="step-body">
+                  <div class="step-title">Bahasa dan Kerangka yang Sama</div>
+                  <div class="step-desc">Semua departemen pakai definisi, skala penilaian, dan template yang sama supaya bisa dibandingkan dan dilaporkan secara konsisten.</div>
+                </div>
+              </div>
+              <div class="step-item">
+                <div class="step-num">3</div>
+                <div class="step-body">
+                  <div class="step-title">Pelaporan Rutin ke Dewan</div>
+                  <div class="step-desc">Risiko utama dilaporkan berkala kepada komisaris atau dewan direksi untuk pengawasan dan akuntabilitas yang sesungguhnya.</div>
+                </div>
+              </div>
+              <div class="step-item">
+                <div class="step-num">4</div>
+                <div class="step-body">
+                  <div class="step-title">Terhubung dengan Target Kinerja</div>
+                  <div class="step-desc">Setiap keputusan strategis selalu menimbang sisi risiko: seberapa besar risiko yang bersedia kita ambil demi target pertumbuhan X persen?</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="content-card fade-in">
+            <h3>Manfaat Besarnya</h3>
+            <div class="cat-grid">
+              <div class="cat-card"><div class="cat-icon">🧭</div><div class="cat-name">Keputusan Lebih Berkualitas</div><div class="cat-ex">Setiap keputusan besar sudah ditimbang risikonya secara terstruktur.</div></div>
+              <div class="cat-card"><div class="cat-icon">🔍</div><div class="cat-name">Alokasi Sumber Daya Tepat</div><div class="cat-ex">Modal dan SDM diarahkan ke area yang memiliki profil risiko paling seimbang.</div></div>
+              <div class="cat-card"><div class="cat-icon">🛡️</div><div class="cat-name">Ketangguhan Organisasi</div><div class="cat-ex">Ketika krisis datang, perusahaan punya rencana, bukan panik buta.</div></div>
+              <div class="cat-card"><div class="cat-icon">📈</div><div class="cat-name">Kepercayaan Investor</div><div class="cat-ex">Tata kelola risiko yang matang meningkatkan kepercayaan investor dan regulator.</div></div>
+            </div>
+            <div class="gold-box" style="margin-top:14px">
+              <div class="hb-label">Catatan Jujur</div>
+              <p>Penerapan ISO 31000 atau COSO sekalipun tidak menjamin perusahaan bebas dari keputusan buruk. Kerangka hanyalah alat bantu berpikir, bukan jaminan. Manusianya tetap jadi penentu.</p>
+            </div>
+          </div>`
+      },
+      {
+        id: 9, icon: '🏪', time: '9 menit',
+        tag: 'Bab 9', title: 'Penerapan di Usaha Lokal dan UMKM',
+        hasQuiz: true,
+        content: () => `
+          <div class="content-card fade-in">
+            <h3>Tulang Punggung Ekonomi Indonesia</h3>
+            <p>UMKM bukan bisnis kecil-kecilan. Ini tulang punggung ekonomi nasional. Justru karena modalnya terbatas dan cadangannya tipis, satu kejutan saja bisa menjatuhkan usaha kecil. Itulah kenapa manajemen risiko bahkan lebih kritis untuk UMKM.</p>
+            <div class="stat-row">
+              <div class="stat-box"><div class="val">66<span>jt</span></div><div class="lbl">Jumlah UMKM Indonesia (2023)</div></div>
+              <div class="stat-box"><div class="val">99<span>%</span></div><div class="lbl">Dari total badan usaha nasional</div></div>
+              <div class="stat-box"><div class="val">117<span>jt</span></div><div class="lbl">Tenaga kerja yang diserap</div></div>
+              <div class="stat-box"><div class="val">61<span>%</span></div><div class="lbl">Kontribusi terhadap PDB Indonesia</div></div>
+            </div>
+            <p style="margin-top:8px;font-size:12px;color:var(--gray-400)">Sumber: Kementerian Koperasi dan UKM, 2023. Nilai PDB UMKM mencapai sekitar Rp 9.580 triliun.</p>
+          </div>
+          <div class="content-card fade-in">
+            <h3>Risiko Umum yang Dihadapi UMKM</h3>
+            <div class="cat-grid">
+              <div class="cat-card"><div class="cat-icon">💸</div><div class="cat-name">Arus Kas Seret</div><div class="cat-ex">Piutang tak tertagih, pengeluaran membengkak, atau musim sepi yang lebih panjang dari perkiraan.</div></div>
+              <div class="cat-card"><div class="cat-icon">📦</div><div class="cat-name">Gangguan Rantai Pasok</div><div class="cat-ex">Pemasok tunggal bermasalah, harga bahan baku naik tiba-tiba, atau keterlambatan pengiriman.</div></div>
+              <div class="cat-card"><div class="cat-icon">📱</div><div class="cat-name">Ketergantungan Platform Digital</div><div class="cat-ex">Akun marketplace ditangguhkan, algoritma berubah, atau promosi yang gagal.</div></div>
+              <div class="cat-card"><div class="cat-icon">👥</div><div class="cat-name">SDM Kunci Keluar</div><div class="cat-ex">Karyawan atau orang kepercayaan yang pegang keahlian vital tiba-tiba pergi.</div></div>
+            </div>
+          </div>
+          <div class="content-card fade-in">
+            <h3>5 Langkah Praktis yang Bisa Langsung Dijalankan</h3>
+            <div class="steps-list">
+              <div class="step-item">
+                <div class="step-num">1</div>
+                <div class="step-body">
+                  <div class="step-title">Buat SOP Sederhana</div>
+                  <div class="step-desc">Tulis dengan bahasa sehari-hari, tempel di tempat kerja, dan review tiap 30 hari. SOP yang konsisten memperkecil kesalahan manusia drastis.</div>
+                </div>
+              </div>
+              <div class="step-item">
+                <div class="step-num">2</div>
+                <div class="step-body">
+                  <div class="step-title">Pisahkan Keuangan Usaha dan Pribadi</div>
+                  <div class="step-desc">Buat rekening terpisah. Ini mitigasi risiko keuangan paling mendasar dan paling sering diabaikan pelaku UMKM.</div>
+                </div>
+              </div>
+              <div class="step-item">
+                <div class="step-num">3</div>
+                <div class="step-body">
+                  <div class="step-title">Urus Legalitas: Minimal Punya NIB</div>
+                  <div class="step-desc">NIB (Nomor Induk Berusaha) bisa diurus lewat sistem OSS. Ini mitigasi risiko hukum sekaligus membuka akses modal dan pasar.</div>
+                </div>
+              </div>
+              <div class="step-item">
+                <div class="step-num">4</div>
+                <div class="step-body">
+                  <div class="step-title">Pertimbangkan Asuransi Mikro</div>
+                  <div class="step-desc">Asuransi mikro adalah jaring pengaman untuk risiko berdampak besar yang tidak bisa dicegah: kebakaran, banjir, dan sejenisnya.</div>
+                </div>
+              </div>
+              <div class="step-item">
+                <div class="step-num">5</div>
+                <div class="step-body">
+                  <div class="step-title">Jangan Bergantung pada Satu Saluran</div>
+                  <div class="step-desc">Diversifikasi pemasok, platform penjualan, dan basis pelanggan. Satu saluran yang mati tidak boleh mematikan seluruh usaha.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="content-card fade-in">
+            <h3>Contoh per Jenis Usaha</h3>
+            <div style="overflow-x:auto">
+              <table style="width:100%;border-collapse:collapse;font-size:13px">
+                <thead>
+                  <tr style="background:var(--teal);color:white">
+                    <th style="padding:10px 14px;text-align:left">Jenis Usaha</th>
+                    <th style="padding:10px 14px;text-align:left">Risiko Utama</th>
+                    <th style="padding:10px 14px;text-align:left">Mitigasi Cepat</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr style="border-bottom:1px solid var(--gray-200)">
+                    <td style="padding:10px 14px;font-weight:600">🍛 Kuliner</td>
+                    <td style="padding:10px 14px;color:var(--gray-700)">Bahan cepat rusak, rasa tidak konsisten</td>
+                    <td style="padding:10px 14px;color:var(--gray-700)">FIFO stok, resep baku + timbangan, vendor cadangan</td>
+                  </tr>
+                  <tr style="background:var(--gray-50);border-bottom:1px solid var(--gray-200)">
+                    <td style="padding:10px 14px;font-weight:600">👗 Fesyen Online</td>
+                    <td style="padding:10px 14px;color:var(--gray-700)">Salah ukuran/warna, retur tinggi, stok tidak akurat</td>
+                    <td style="padding:10px 14px;color:var(--gray-700)">Foto detail, panduan ukuran, stok opname mingguan</td>
+                  </tr>
+                  <tr style="border-bottom:1px solid var(--gray-200)">
+                    <td style="padding:10px 14px;font-weight:600">🛒 Retail Umum</td>
+                    <td style="padding:10px 14px;color:var(--gray-700)">Stok kosong, pemasok terlambat, pencurian</td>
+                    <td style="padding:10px 14px;color:var(--gray-700)">Reorder point otomatis, 2 pemasok, CCTV + SOP kasir</td>
+                  </tr>
+                  <tr style="background:var(--gray-50)">
+                    <td style="padding:10px 14px;font-weight:600">🔧 Jasa/Servis</td>
+                    <td style="padding:10px 14px;color:var(--gray-700)">Teknisi kunci sakit, janji waktu tidak tepat</td>
+                    <td style="padding:10px 14px;color:var(--gray-700)">Cross-training tim, SLA tertulis, buffer jadwal</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>`
+      },
+      {
+        id: 10, icon: '👨‍👩‍👧', time: '9 menit',
+        tag: 'Bab 10', title: 'Penerapan di Bisnis Keluarga',
+        content: () => `
+          <div class="content-card fade-in">
+            <h3>Kekuatan yang Bisa Berbalik Jadi Ancaman</h3>
+            <p>Bisnis keluarga punya keunggulan nyata. Pelanggan lebih percaya pada keluarga ketimbang perusahaan tanpa wajah, dan komitmen keluarga sering bertahan lintas generasi. Tapi keunggulan ini bisa berbalik jadi ancaman karena ada bahan tambahan yang tidak dimiliki perusahaan biasa: <strong>emosi dan hubungan darah.</strong></p>
+          </div>
+          <div class="content-card fade-in">
+            <h3>Tiga Lingkaran: Pemilik, Keluarga, Bisnis</h3>
+            <p>Model klasik bisnis keluarga menggambarkan tiga dunia yang saling tumpang tindih. Ketika batasnya kabur, masalah dimulai.</p>
+            <div class="three-circles">
+              <div class="circle-card owner">
+                <div class="ci">👑</div>
+                <div class="cn">Pemilik</div>
+                <div class="cd">Peran sebagai pemegang saham, kepentingan investasi dan return jangka panjang.</div>
+              </div>
+              <div class="circle-card family">
+                <div class="ci">❤️</div>
+                <div class="cn">Keluarga</div>
+                <div class="cd">Hubungan personal, nilai bersama, harmoni, dan kepentingan tiap anggota keluarga.</div>
+              </div>
+              <div class="circle-card biz">
+                <div class="ci">🏭</div>
+                <div class="cn">Bisnis</div>
+                <div class="cd">Operasional sehari-hari, kinerja, pelanggan, karyawan, dan keberlanjutan usaha.</div>
+              </div>
+            </div>
+          </div>
+          <div class="content-card fade-in">
+            <h3>Lima Risiko Paling Khas Bisnis Keluarga</h3>
+            <div class="steps-list">
+              <div class="step-item">
+                <div class="step-num">1</div>
+                <div class="step-body">
+                  <div class="step-title">Konflik Keluarga Merembet ke Operasional</div>
+                  <div class="step-desc">Perselisihan dalam keluarga cenderung lebih emosional ketimbang perselisihan antar rekan kerja biasa. Kalau tidak ditangani, masalah pribadi bisa paraliskan seluruh operasional usaha.</div>
+                </div>
+              </div>
+              <div class="step-item">
+                <div class="step-num">2</div>
+                <div class="step-body">
+                  <div class="step-title">Suksesi yang Tidak Direncanakan</div>
+                  <div class="step-desc">Banyak keluarga menunda karena yakin "nanti juga beres sendiri". Akibatnya muncul kekosongan kepemimpinan saat pendiri sakit atau meninggal. Riset dari Egon Zehnder menegaskan: <strong>menunggu terlalu lama</strong> adalah kesalahan paling umum.</div>
+                </div>
+              </div>
+              <div class="step-item">
+                <div class="step-num">3</div>
+                <div class="step-body">
+                  <div class="step-title">Tata Kelola yang Lemah</div>
+                  <div class="step-desc">Tanpa aturan main yang jelas tentang siapa memutuskan apa, risiko keuangan dan hukum bisa membesar. Karyawan non-keluarga juga bisa merasa diperlakukan tidak adil, memicu konflik yang bisa berujung tuntutan.</div>
+                </div>
+              </div>
+              <div class="step-item">
+                <div class="step-num">4</div>
+                <div class="step-body">
+                  <div class="step-title">Uang Keluarga Campur dengan Uang Usaha</div>
+                  <div class="step-desc">Kalau batas antara dompet pribadi keluarga dan kas perusahaan kabur, laporan keuangan menjadi tidak bisa dipercaya dan keputusan investasi jadi kacau.</div>
+                </div>
+              </div>
+              <div class="step-item">
+                <div class="step-num">5</div>
+                <div class="step-body">
+                  <div class="step-title">Sulit Beradaptasi</div>
+                  <div class="step-desc">Keterikatan pada "cara almarhum pendiri melakukannya" bisa membuat bisnis keluarga lambat berubah saat pasar bergerak. Kemampuan adaptasi harus dibangun secara sadar.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="content-card fade-in">
+            <h3>Cara Mengelolanya</h3>
+            <div class="cat-grid">
+              <div class="cat-card"><div class="cat-icon">📋</div><div class="cat-name">Rencana Suksesi Tertulis</div><div class="cat-ex">Buat jauh-jauh hari. Siapkan calon pemimpin lewat pengembangan nyata, bukan sekadar warisan jabatan.</div></div>
+              <div class="cat-card"><div class="cat-icon">📜</div><div class="cat-name">Konstitusi Keluarga</div><div class="cat-ex">Aturan tertulis yang memisahkan peran sebagai pemilik, pengurus, dan anggota keluarga secara tegas.</div></div>
+              <div class="cat-card"><div class="cat-icon">💼</div><div class="cat-name">Keuangan Terpisah</div><div class="cat-ex">Rekening usaha dan pribadi tidak boleh campur. Gaji anggota keluarga harus sesuai pasar, bukan berdasarkan hubungan darah.</div></div>
+              <div class="cat-card"><div class="cat-icon">⚖️</div><div class="cat-name">Kebijakan SDM yang Adil</div><div class="cat-ex">Aturan perekrutan, promosi, dan penggajian berlaku sama untuk anggota keluarga maupun karyawan luar.</div></div>
+            </div>
+          </div>`
+      },
+      {
+        id: 11, icon: '📰', time: '8 menit',
+        tag: 'Bab 11', title: 'Belajar dari Kisah Nyata',
+        hasQuiz: true,
+        content: () => `
+          <div class="content-card fade-in">
+            <h3>Raksasa yang Tumbang Karena Salah Baca Risiko</h3>
+            <p>Cara tercepat memahami pentingnya manajemen risiko adalah melihat perusahaan besar yang sudah terbukti tumbang. Kasus-kasus ini bukan sejarah jauh, melainkan pelajaran yang masih relevan hari ini.</p>
+          </div>
+          <div class="case-grid">
+            <div class="case-card">
+              <div class="case-head">
+                <div class="case-logo kodak">📷</div>
+                <div class="case-info">
+                  <div class="case-company">Kodak</div>
+                  <div class="case-year">Puncak kejayaan: 1970-an. Bangkrut: 2012</div>
+                </div>
+              </div>
+              <div class="case-body">
+                <div class="case-timeline">
+                  <div class="case-event">
+                    <div class="ce-dot peak"></div>
+                    <div class="ce-text"><strong>Puncak:</strong> Menguasai lebih dari 80% penjualan film foto di Amerika. Nama Kodak hampir identik dengan fotografi.</div>
+                  </div>
+                  <div class="case-event">
+                    <div class="ce-dot miss"></div>
+                    <div class="ce-text"><strong>Momen terlewat:</strong> Kodak menemukan kamera digital pada 1975, lalu menyimpannya karena takut menggerus penjualan film yang sedang untung besar.</div>
+                  </div>
+                  <div class="case-event">
+                    <div class="ce-dot crash"></div>
+                    <div class="ce-text"><strong>Kejatuhan:</strong> Ketika digital meledak di tahun 2000-an, pesaing sudah merebut pasar. Kodak bangkrut pada 2012.</div>
+                  </div>
+                </div>
+                <div class="case-lesson">Risiko strategis yang dibiarkan karena nyaman dengan kondisi hari ini adalah racun paling berbahaya untuk bisnis jangka panjang.</div>
+              </div>
+            </div>
+            <div class="case-card">
+              <div class="case-head">
+                <div class="case-logo block">🎬</div>
+                <div class="case-info">
+                  <div class="case-company">Blockbuster</div>
+                  <div class="case-year">Puncak: 1990-an. Bangkrut: 2010</div>
+                </div>
+              </div>
+              <div class="case-body">
+                <div class="case-timeline">
+                  <div class="case-event">
+                    <div class="ce-dot peak"></div>
+                    <div class="ce-text"><strong>Puncak:</strong> Jaringan penyewaan film terbesar dunia, ada di hampir setiap sudut kota di banyak negara.</div>
+                  </div>
+                  <div class="case-event">
+                    <div class="ce-dot miss"></div>
+                    <div class="ce-text"><strong>Momen terlewat:</strong> Pada tahun 2000, Netflix menawarkan kerja sama untuk platform daring. Blockbuster menolak.</div>
+                  </div>
+                  <div class="case-event">
+                    <div class="ce-dot crash"></div>
+                    <div class="ce-text"><strong>Kejatuhan:</strong> Kurang dari sepuluh tahun setelah menolak Netflix, Blockbuster mengajukan kebangkrutan.</div>
+                  </div>
+                </div>
+                <div class="case-lesson">Menolak bermitra dengan pesaing yang masih kecil adalah taruhan besar. Perubahan model bisnis bisa datang dari arah yang tidak terduga.</div>
+              </div>
+            </div>
+            <div class="case-card">
+              <div class="case-head">
+                <div class="case-logo nokia">📱</div>
+                <div class="case-info">
+                  <div class="case-company">Nokia</div>
+                  <div class="case-year">Puncak: 2000-an awal. Dijual: 2014</div>
+                </div>
+              </div>
+              <div class="case-body">
+                <div class="case-timeline">
+                  <div class="case-event">
+                    <div class="ce-dot peak"></div>
+                    <div class="ce-text"><strong>Puncak:</strong> Pemimpin pasar telepon genggam global yang mendominasi selama lebih dari satu dekade.</div>
+                  </div>
+                  <div class="case-event">
+                    <div class="ce-dot miss"></div>
+                    <div class="ce-text"><strong>Momen terlewat:</strong> Terlambat berpindah ke ekosistem ponsel pintar dan sistem Android saat iPhone mengubah pasar.</div>
+                  </div>
+                  <div class="case-event">
+                    <div class="ce-dot crash"></div>
+                    <div class="ce-text"><strong>Kejatuhan:</strong> Bisnis ponsel akhirnya dijual ke Microsoft pada 2014, dan kemudian dijual lagi.</div>
+                  </div>
+                </div>
+                <div class="case-lesson">Inovasi teknologi saja tidak cukup untuk bertahan. Budaya adaptif dan kecepatan merespons pergeseran pasar sama pentingnya.</div>
+              </div>
+            </div>
+          </div>
+          <div class="content-card fade-in" style="margin-top:16px">
+            <h3>Benang Merah Ketiga Kasus</h3>
+            <div class="highlight-box">
+              <div class="hb-label">Pelajaran Universal</div>
+              <p>Bukan kekurangan uang atau teknologi yang membunuh Kodak, Blockbuster, dan Nokia. Yang membunuh mereka adalah <strong>rasa puas diri, keengganan berubah, dan terlambat membaca pergeseran</strong> sebagai risiko strategis nyata. Pelajaran ini berlaku untuk usaha kecil sekalipun: pantau terus perubahan di sekitar, dan jangan jatuh cinta berlebihan pada cara lama.</p>
+            </div>
+          </div>`
+      },
+      {
+        id: 12, icon: '🕌', time: '5 menit',
+        tag: 'Bab 12', title: 'Perspektif Ekonomi Syariah tentang Risiko',
+        hasQuiz: true,
+        content: () => `
+          <div class="content-card fade-in">
+            <h3>Risiko dalam Tradisi Ekonomi Islam</h3>
+            <p>Sebagai pengayaan konteks Indonesia, tradisi ekonomi syariah punya pandangan khas tentang risiko yang memperkaya perspektif konvensional. Pandangan ini bukan sekedar tambahan, melainkan fondasi cara berpikir bisnis yang berbeda.</p>
+          </div>
+          <div class="content-card fade-in">
+            <h3>Prinsip Kunci: Al-Ghunmu bil Ghurmi</h3>
+            <div class="highlight-box">
+              <div class="hb-label">Prinsip Dasar</div>
+              <p><strong>"Al-ghunmu bil ghurmi"</strong> artinya: keuntungan selalu berjalan beriringan dengan kesediaan menanggung risiko. Tidak ada keuntungan tanpa risiko yang setara. Ini bukan slogan, melainkan fondasi akad-akad syariah.</p>
+            </div>
+            <div class="cat-grid" style="margin-top:14px">
+              <div class="cat-card">
+                <div class="cat-icon">🤝</div>
+                <div class="cat-name">Mudharabah</div>
+                <div class="cat-ex">Bagi hasil: satu pihak modal, satu pihak kerja. Keuntungan dibagi sesuai nisbah. Kerugian usaha (bukan karena kelalaian) ditanggung pemilik modal. Risiko ditanggung bersama secara proporsional.</div>
+              </div>
+              <div class="cat-card">
+                <div class="cat-icon">👥</div>
+                <div class="cat-name">Musyarakah</div>
+                <div class="cat-ex">Patungan modal. Keuntungan dan risiko ditanggung bersama sesuai porsi modal atau kesepakatan. Tidak ada yang bisa melempar risiko sepenuhnya ke pihak lain.</div>
+              </div>
+              <div class="cat-card">
+                <div class="cat-icon">🏠</div>
+                <div class="cat-name">Ijarah</div>
+                <div class="cat-ex">Sewa manfaat. Risiko kepemilikan aset ditanggung pemberi sewa, risiko penggunaan oleh penyewa. Pembagian risiko diatur jelas sejak awal akad.</div>
+              </div>
+              <div class="cat-card">
+                <div class="cat-icon">🛒</div>
+                <div class="cat-name">Murabahah</div>
+                <div class="cat-ex">Jual beli dengan harga pokok ditambah margin yang disepakati. Bank/lembaga menanggung risiko kepemilikan aset sebelum dijual ke nasabah.</div>
+              </div>
+            </div>
+          </div>
+          <div class="content-card fade-in">
+            <h3>Yang Dilarang: Gharar</h3>
+            <div class="gold-box">
+              <div class="hb-label">Gharar</div>
+              <p><strong>Gharar</strong> adalah ketidakpastian yang berlebihan dan menyesatkan. Berbeda dengan risiko bisnis yang wajar, gharar adalah ketidakjelasan yang dengan sengaja merugikan salah satu pihak. Contoh: menjual barang yang tidak ada, atau akad dengan ketidakpastian pokok yang fundamental.</p>
+            </div>
+            <div class="cat-grid" style="margin-top:12px">
+              <div class="cat-card">
+                <div class="cat-icon">✅</div>
+                <div class="cat-name">Boleh: Risiko Bisnis Wajar</div>
+                <div class="cat-ex">Ketidakpastian yang melekat pada setiap usaha. Pedagang tidak tahu apakah cuaca besok akan ramai pembeli. Ini risiko yang diterima dan dikelola.</div>
+              </div>
+              <div class="cat-card">
+                <div class="cat-icon">🚫</div>
+                <div class="cat-name">Dilarang: Gharar</div>
+                <div class="cat-ex">Ketidakjelasan yang disengaja dan merugikan pihak lain. Contoh: kontrak yang isi pokoknya tidak jelas, atau produk derivatif yang murni spekulatif tanpa underlying nyata.</div>
+              </div>
+            </div>
+          </div>
+          <div class="content-card fade-in">
+            <h3>Relevansi untuk Bisnis Syariah di Indonesia</h3>
+            <p>Bagi pelaku usaha yang beroperasi dalam ekosistem syariah (koperasi, BPRS, BMT, atau usaha dengan sertifikasi halal), pemahaman ini bukan sekedar nilai tambah. Ini adalah kerangka kerja yang menentukan produk apa yang bisa ditawarkan dan bagaimana risiko dibagi antara lembaga dan nasabah.</p>
+            <div class="highlight-box">
+              <div class="hb-label">Kesimpulan</div>
+              <p>Dalam perspektif syariah, mengambil risiko yang wajar dan terukur itu <em>dihargai</em> karena itulah hakikat usaha. Yang dilarang bukan risikonya, melainkan ketidakjujuran dan ketidakjelasan yang membuat pihak lain menanggung beban yang tidak ia pahami.</p>
+            </div>
+          </div>`
+      }
+    ];
+
+    /* ═══════════════════════════════════════════════
+       QUIZ DATA
+    ═══════════════════════════════════════════════ */
+    const QUIZZES = {
+      3: {
+        title: 'Kuis A: Fondasi dan Keilmuan',
+        subtitle: 'Bab 1, 2, dan 3',
+        qs: [
+          {
+            q: 'Risiko dalam konteks bisnis paling tepat didefinisikan sebagai?',
+            opts: ['Kejadian buruk yang sudah pasti terjadi','Pengaruh ketidakpastian terhadap tujuan','Kerugian finansial yang sudah dicatat','Peluang keuntungan di masa depan'],
+            ans: 1,
+            exp: 'Definisi resmi ISO 31000: risiko adalah pengaruh ketidakpastian terhadap tujuan. Mencakup kemungkinan baik maupun buruk.'
+          },
+          {
+            q: 'ISO 31000 berdiri di atas berapa komponen utama?',
+            opts: ['Dua: prinsip dan proses','Tiga: prinsip, kerangka, proses','Lima: sama seperti COSO ERM','Delapan: satu per prinsip'],
+            ans: 1,
+            exp: 'ISO 31000 memiliki tiga komponen yang saling menyangga: prinsip, kerangka (framework), dan proses.'
+          },
+          {
+            q: 'Pernyataan mana yang BENAR tentang ISO 31000?',
+            opts: ['Wajib disertifikasi agar diakui internasional','Hanya berlaku untuk perusahaan multinasional','Tidak bisa disertifikasi, berperan sebagai panduan praktik terbaik','Khusus untuk lembaga keuangan dan asuransi'],
+            ans: 2,
+            exp: 'ISO 31000 adalah panduan, bukan standar sertifikasi. Tidak ada badan yang memberi cap "lulus ISO 31000" kepada perusahaan.'
+          },
+          {
+            q: 'Komponen pertama COSO ERM 2017 yang menekankan teladan pimpinan adalah?',
+            opts: ['Performance','Strategy and Objective Setting','Governance and Culture','Review and Revision'],
+            ans: 2,
+            exp: 'Governance and Culture adalah komponen pertama COSO ERM 2017, menekankan pentingnya teladan dari pucuk pimpinan dan budaya sadar risiko.'
+          }
+        ]
+      },
+      7: {
+        title: 'Kuis B: Proses dan Strategi 4T',
+        subtitle: 'Bab 4, 5, 6, dan 7',
+        qs: [
+          {
+            q: 'Pemasok tunggal yang tiba-tiba tidak bisa mengirim bahan baku termasuk kategori risiko apa?',
+            opts: ['Risiko keuangan','Risiko operasional','Risiko strategis','Risiko reputasi'],
+            ans: 1,
+            exp: 'Gangguan pada kegiatan sehari-hari seperti pasokan tersendat termasuk risiko operasional.'
+          },
+          {
+            q: 'Dalam proses ISO 31000, langkah mana yang dilakukan BERSAMAAN sepanjang semua langkah lain?',
+            opts: ['Identifikasi risiko','Evaluasi risiko','Komunikasi dan konsultasi','Perlakuan risiko'],
+            ans: 2,
+            exp: 'Komunikasi dan konsultasi bukan langkah berurutan, melainkan benang merah yang menemani semua langkah dari awal hingga akhir.'
+          },
+          {
+            q: 'Matriks risiko digunakan untuk tujuan apa?',
+            opts: ['Menghitung biaya penanganan secara presisi','Memetakan risiko berdasarkan kemungkinan dan dampak untuk menentukan prioritas','Menyusun laporan keuangan tahunan','Menentukan tarif asuransi yang sesuai'],
+            ans: 1,
+            exp: 'Matriks risiko adalah alat visualisasi yang memplot risiko pada sumbu kemungkinan dan dampak untuk membantu penentuan prioritas.'
+          },
+          {
+            q: 'Seorang pelaku usaha memutuskan tidak jadi masuk pasar baru setelah menilai risikonya terlalu besar. Ini contoh strategi?',
+            opts: ['Treat (kurangi)','Transfer (alihkan)','Tolerate (terima)','Terminate (hentikan)'],
+            ans: 3,
+            exp: 'Menghentikan atau menghindari aktivitas yang menimbulkan risiko terlalu besar adalah strategi Terminate.'
+          },
+          {
+            q: 'Risk register adalah?',
+            opts: ['Laporan keuangan berbasis risiko','Catatan berisi semua risiko beserta detail dan tindakan penanganannya','Matriks kemungkinan dikali dampak','Daftar nama karyawan penanggung jawab risiko'],
+            ans: 1,
+            exp: 'Risk register adalah dokumen hidup yang mencatat semua risiko, kategori, skor prioritas, dan tindakan yang direncanakan.'
+          }
+        ]
+      },
+      9: {
+        title: 'Kuis C: UMKM Indonesia',
+        subtitle: 'Bab 8 dan 9',
+        qs: [
+          {
+            q: 'Berdasarkan data 2023, berapa persen PDB Indonesia disumbang oleh UMKM?',
+            opts: ['42%','51%','61%','73%'],
+            ans: 2,
+            exp: 'UMKM menyumbang sekitar 61 persen PDB Indonesia dengan nilai sekitar Rp 9.580 triliun (Kemenkop UKM, 2023).'
+          },
+          {
+            q: 'Berapa jumlah UMKM Indonesia menurut data 2023?',
+            opts: ['Sekitar 26 juta','Sekitar 46 juta','Sekitar 66 juta','Sekitar 86 juta'],
+            ans: 2,
+            exp: 'Data Kementerian Koperasi dan UKM 2023 mencatat sekitar 66 juta UMKM di Indonesia, mencakup 99 persen dari total badan usaha.'
+          },
+          {
+            q: 'Metode FIFO dalam pengelolaan stok artinya?',
+            opts: ['Barang paling mahal dijual terlebih dahulu','Barang yang masuk terakhir keluar duluan','Barang yang masuk pertama keluar duluan','Barang slow-moving dibuang dahulu'],
+            ans: 2,
+            exp: 'FIFO singkatan dari First In, First Out: barang yang pertama masuk adalah yang pertama keluar. Penting untuk usaha yang memiliki barang kadaluarsa.'
+          },
+          {
+            q: 'Memiliki NIB (Nomor Induk Berusaha) terutama merupakan bentuk mitigasi risiko apa?',
+            opts: ['Risiko operasional','Risiko strategis','Risiko hukum dan kepatuhan','Risiko reputasi'],
+            ans: 2,
+            exp: 'NIB adalah identitas legal usaha. Memilikinya adalah bentuk mitigasi risiko hukum dan kepatuhan, sekaligus membuka akses permodalan.'
+          }
+        ]
+      },
+      11: {
+        title: 'Kuis D: Bisnis Keluarga dan Kisah Nyata',
+        subtitle: 'Bab 10 dan 11',
+        qs: [
+          {
+            q: 'Kodak mengajukan kebangkrutan pada tahun?',
+            opts: ['2005','2008','2010','2012'],
+            ans: 3,
+            exp: 'Kodak mengajukan kebangkrutan pada 2012, setelah bertahun-tahun gagal beralih dari bisnis film foto ke era digital.'
+          },
+          {
+            q: 'Blockbuster pertama kali ditawari kerja sama oleh Netflix sekitar tahun?',
+            opts: ['1995','2000','2005','2010'],
+            ans: 1,
+            exp: 'Pada tahun 2000, pendiri Netflix, Reed Hastings, menawarkan kemitraan kepada Blockbuster untuk menjalankan platform daring. Tawaran itu ditolak.'
+          },
+          {
+            q: 'Risiko yang paling khas dimiliki bisnis keluarga dibandingkan perusahaan lain adalah?',
+            opts: ['Risiko bencana alam yang lebih tinggi','Dinamika emosi dan hubungan personal yang bisa merembet ke operasional','Risiko kompetitor dari luar negeri','Risiko teknologi yang sulit diantisipasi'],
+            ans: 1,
+            exp: 'Bisnis keluarga memiliki lapisan tambahan berupa emosi dan hubungan darah yang tidak ada di perusahaan biasa. Ini bisa jadi kekuatan sekaligus risiko unik.'
+          },
+          {
+            q: 'Apa kesalahan paling umum bisnis keluarga dalam hal suksesi?',
+            opts: ['Merekrut pemimpin dari luar perusahaan','Menunggu terlalu lama untuk membuat rencana suksesi formal','Membuat rencana suksesi sebelum bisnis cukup besar','Menginvestasikan terlalu banyak untuk pengembangan generasi berikutnya'],
+            ans: 1,
+            exp: 'Riset dari Egon Zehnder menegaskan bahwa menunggu terlalu lama adalah kesalahan paling umum. Banyak keluarga menunda karena asumsi "nanti juga beres".'
+          }
+        ]
+      },
+      12: {
+        title: 'Kuis Final: Komprehensif',
+        subtitle: 'Semua Bab',
+        qs: [
+          {
+            q: 'Tujuan akhir dari manajemen risiko berdasarkan ISO 31000 adalah?',
+            opts: ['Menghilangkan seluruh ketidakpastian dalam bisnis','Mematuhi semua regulasi pemerintah','Menciptakan dan melindungi nilai','Meminimalkan biaya operasional serendah mungkin'],
+            ans: 2,
+            exp: 'ISO 31000 secara eksplisit menyatakan bahwa tujuan manajemen risiko adalah menciptakan dan melindungi nilai, bukan sekadar menghindari kerugian.'
+          },
+          {
+            q: 'Pemilik restoran membeli asuransi kebakaran untuk tokonya. Ini contoh strategi?',
+            opts: ['Tolerate (terima)','Treat (kurangi)','Transfer (alihkan)','Terminate (hentikan)'],
+            ans: 2,
+            exp: 'Membeli asuransi adalah contoh klasik Transfer: memindahkan beban finansial dari risiko ke pihak lain, yaitu perusahaan asuransi.'
+          },
+          {
+            q: 'COSO ERM 2017 menganalogikan lima komponennya seperti?',
+            opts: ['Piramida berlapis dari bawah ke atas','Roda gigi yang saling terhubung','Pita yang melilit, mirip untaian DNA','Pohon dengan akar, batang, dan cabang'],
+            ans: 2,
+            exp: 'COSO menggambarkan lima komponen sebagai pita yang melilit seluruh perjalanan strategi, mirip DNA, untuk menegaskan risiko harus tertanam di tubuh organisasi.'
+          },
+          {
+            q: 'Berapa persen angkatan kerja nasional Indonesia yang diserap UMKM menurut data 2023?',
+            opts: ['60%','75%','85%','97%'],
+            ans: 3,
+            exp: 'UMKM menyerap sekitar 117 juta tenaga kerja atau sekitar 97 persen dari total angkatan kerja nasional (Kemenkop UKM, 2023).'
+          },
+          {
+            q: 'Dalam konsep ekonomi syariah, prinsip "al-ghunmu bil ghurmi" berarti?',
+            opts: ['Dilarang mengambil risiko dalam berbisnis','Keuntungan selalu berjalan beriringan dengan kesediaan menanggung risiko','Risiko harus selalu dialihkan ke pihak lain','Usaha tanpa risiko adalah usaha yang terbaik'],
+            ans: 1,
+            exp: 'Al-ghunmu bil ghurmi adalah prinsip dasar syariah: keuntungan dan risiko tidak bisa dipisahkan. Ini menjadi fondasi akad bagi hasil seperti mudharabah dan musyarakah.'
+          },
+          {
+            q: 'Dari kasus Kodak, Blockbuster, dan Nokia: apa benang merah penyebab kejatuhan ketiganya?',
+            opts: ['Kekurangan modal dan teknologi','Masalah hukum dengan regulator','Rasa puas diri dan terlambat merespons pergeseran pasar sebagai risiko strategis','Produk yang tidak relevan sejak awal'],
+            ans: 2,
+            exp: 'Ketiganya tidak kekurangan uang atau teknologi. Yang membunuh mereka adalah ketidakmampuan beradaptasi dan terlambat mengakui perubahan sebagai risiko nyata.'
+          }
+        ]
+      }
+    };
+
+    /* ═══════════════════════════════════════════════
+       HELPERS
+    ═══════════════════════════════════════════════ */
+    function pct() {
+      return Math.round((state.done.size / CHAPTERS.length) * 100);
+    }
+    function totalScore() {
+      let s = 0, t = 0;
+      Object.values(state.quizDone).forEach(r => { s += r.score; t += r.total; });
+      return t > 0 ? Math.round((s/t)*100) : 0;
+    }
+    function quizScore(chId) {
+      if (!state.qSubmitted[chId]) return null;
+      const q = QUIZZES[chId];
+      let score = 0;
+      q.qs.forEach((item, qi) => {
+        if ((state.qSel[chId] || {})[qi] === item.ans) score++;
+      });
+      return { score, total: q.qs.length };
+    }
+
+    /* ═══════════════════════════════════════════════
+       RENDER: LOGIN
+    ═══════════════════════════════════════════════ */
+    function renderLogin() {
+      return `
+      <div class="login-page">
+        <div class="login-wrapper">
+          <div class="login-badge">
+            <div class="mark">NY</div>
+            <div>
+              <div class="brand">NUVY<span> by Nusva</span></div>
+              <div style="font-size:10px;color:var(--gray-500);font-style:italic;letter-spacing:.3px;margin-top:1px">Nu&#x2019; Version of You</div>
+            </div>
+          </div>
+          <div class="login-card">
+            <div class="login-header">
+              <h1>Manajemen Risiko<br><span class="accent">untuk Semua</span></h1>
+              <p>Dari nol hingga paham: fondasi ilmu, kerangka dunia, dan praktik nyata di UMKM, perusahaan, serta bisnis keluarga.</p>
+              <div class="login-highlights">
+                <span class="chip">12 Bab</span>
+                <span class="chip">5 Kuis Interaktif</span>
+                <span class="chip">35+ Sumber Riset</span>
+                <span class="chip">ISO 31000 &amp; COSO ERM</span>
+              </div>
+            </div>
+            <div class="login-body">
+              <label for="uname">Username</label>
+              <input class="login-input" id="uname" type="text" placeholder="Masukkan username" autocomplete="off">
+              <label for="upass">Password</label>
+              <input class="login-input" id="upass" type="password" placeholder="Masukkan password">
+              <div class="login-error" id="login-err">Username atau password salah. Coba lagi.</div>
+              <button class="btn-login" onclick="doLogin()">Masuk ke Kursus &rarr;</button>
+              <div class="login-footer">Tekan <span>Enter</span> atau klik tombol di atas untuk mulai belajar</div>
+            </div>
+          </div>
+        </div>
+      </div>`;
+    }
+
+    /* ═══════════════════════════════════════════════
+       RENDER: DASHBOARD
+    ═══════════════════════════════════════════════ */
+    function renderDashboard() {
+      const done = state.done.size;
+      const p = pct();
+      const scoreStr = Object.keys(state.quizDone).length > 0
+        ? `${totalScore()}% rata-rata kuis`
+        : 'Belum ada kuis selesai';
+
+      const cards = CHAPTERS.map(ch => {
+        const isDone = state.done.has(ch.id);
+        const isActive = state.chId === ch.id;
+        return `<div class="chapter-card ${isDone?'done':''} ${isActive&&!isDone?'active':''}" onclick="goChapter(${ch.id})">
+          <div class="cc-icon ${isDone?'done':'default'}">${isDone ? '✅' : ch.icon}</div>
+          <div class="cc-body">
+            <div class="cc-num">${ch.tag}</div>
+            <div class="cc-title">${ch.title}</div>
+            <div class="cc-meta">
+              <span class="cc-time">⏱ ${ch.time}</span>
+              ${ch.hasQuiz ? '<span class="cc-badge-quiz">KUIS</span>' : ''}
+              ${isDone ? '<span class="cc-badge-done">Selesai</span>' : ''}
+            </div>
+          </div>
+        </div>`;
+      }).join('');
+
+      const allDone = done === CHAPTERS.length;
+      return `
+      <div class="app-layout">
+        <div class="main-area">
+          <div class="topbar">
+            <div class="topbar-breadcrumb">
+              <span style="font-size:16px;font-weight:800;color:var(--navy)">NUVY<span style="color:var(--teal);font-weight:500;font-size:13px"> by Nusva</span></span>
+            </div>
+            <div class="topbar-right">
+              <div class="user-pill">
+                <div class="user-avatar">MR</div>
+                <div class="user-name">manrisk</div>
+              </div>
+              <button onclick="doLogout()" style="background:none;border:none;color:var(--gray-400);font-size:12px;cursor:pointer;padding:4px 8px;border-radius:6px;" onmouseover="this.style.background='var(--gray-100)'" onmouseout="this.style.background='none'">Keluar</button>
+            </div>
+          </div>
+          <div class="dashboard-page">
+            ${allDone ? `
+            <div class="complete-screen">
+              <div class="complete-medal">🏆</div>
+              <h2>Selamat! Kursus Selesai.</h2>
+              <p>Anda telah menyelesaikan seluruh 12 bab Manajemen Risiko. Ilmu ini siap diterapkan di usaha Anda, mulai dari UMKM sampai bisnis keluarga.</p>
+              <div class="complete-stats">
+                <div class="complete-stat"><div class="cs-val">${done}</div><div class="cs-lbl">Bab Selesai</div></div>
+                <div class="complete-stat"><div class="cs-val">${totalScore()}%</div><div class="cs-lbl">Skor Kuis</div></div>
+                <div class="complete-stat"><div class="cs-val">${Object.keys(state.quizDone).length}</div><div class="cs-lbl">Kuis Dikerjakan</div></div>
+              </div>
+              <button class="btn-complete" onclick="goChapter(1)">Baca Ulang dari Awal</button>
+            </div>` : `
+            <div class="dash-top">
+              <div class="dash-greeting">Halo, <span>Pelajar Manrisk!</span> 👋</div>
+              <div class="dash-sub">Kuasai ilmu manajemen risiko dari nol hingga siap diterapkan langsung.</div>
+            </div>
+            <div class="progress-hero">
+              <div class="ph-left">
+                <div class="ph-tag">Progress Belajar</div>
+                <h3>Manajemen Risiko untuk Semua</h3>
+                <p>${done} dari ${CHAPTERS.length} bab selesai &bull; ${scoreStr}</p>
+              </div>
+              <div class="ph-bar-area">
+                <div class="ph-bar-top"><span>Progress</span><strong>${p}%</strong></div>
+                <div class="ph-bar-outer"><div class="ph-bar-inner" style="width:${p}%"></div></div>
+              </div>
+            </div>
+            <div class="chapter-section-title">Daftar Bab &mdash; ${done}/${CHAPTERS.length} Selesai</div>
+            <div class="chapters-grid">${cards}</div>`}
+          </div>
+        </div>
+      </div>`;
+    }
+
+    /* ═══════════════════════════════════════════════
+       RENDER: CHAPTER
+    ═══════════════════════════════════════════════ */
+    function renderChapter() {
+      const ch = CHAPTERS.find(c => c.id === state.chId);
+      const isDone = state.done.has(ch.id);
+      const p = pct();
+
+      const navItems = CHAPTERS.map(c => {
+        const isActive = c.id === state.chId;
+        const cDone = state.done.has(c.id);
+        return `<div class="nav-item ${isActive?'active':''} ${cDone&&!isActive?'done':''}" onclick="goChapter(${c.id})">
+          <div class="nav-num">${c.id}</div>
+          <div class="nav-text">
+            <div class="nav-title">${c.title}</div>
+          </div>
+          ${c.hasQuiz ? '<span class="nav-badge quiz">Kuis</span>' : ''}
+          ${cDone ? '<span class="nav-check">✓</span>' : ''}
+        </div>`;
+      }).join('');
+
+      const quizHtml = ch.hasQuiz ? renderQuiz(ch.id) : '';
+      const nextCh = CHAPTERS.find(c => c.id === ch.id + 1);
+
+      return `
+      <div class="app-layout">
+        <div class="sidebar">
+          <div class="sidebar-top">
+            <a class="sidebar-logo">
+              <div class="mark">NY</div>
+              <div>
+                <div class="name">NUVY<span> by Nusva</span></div>
+                <div style="font-size:9px;color:rgba(255,255,255,.35);font-style:italic;letter-spacing:.3px">Nu&#x2019; Version of You</div>
+              </div>
+            </a>
+            <div class="sidebar-course-info">
+              <div class="course-name">Kursus Aktif</div>
+              <div class="course-title">Manajemen Risiko untuk Semua</div>
+              <div class="sidebar-progress-bar">
+                <div class="sidebar-progress-fill" style="width:${p}%"></div>
+              </div>
+              <div class="sidebar-progress-text">${p}% selesai</div>
+            </div>
+          </div>
+          <div class="sidebar-nav">
+            <div class="nav-section-label">Semua Bab</div>
+            ${navItems}
+          </div>
+          <div class="sidebar-bottom">
+            <button class="btn-back-dash" onclick="goDash()">← Dashboard</button>
+          </div>
+        </div>
+        <div class="main-area">
+          <div class="topbar">
+            <div class="topbar-breadcrumb">
+              <span class="crumb-home" onclick="goDash()">Dashboard</span>
+              <span class="sep">›</span>
+              <span class="crumb-current">${ch.tag}: ${ch.title}</span>
+            </div>
+            <div class="topbar-right">
+              <div class="user-pill">
+                <div class="user-avatar">MR</div>
+                <div class="user-name">manrisk</div>
+              </div>
+            </div>
+          </div>
+          <div class="content-scroll" id="content-scroll">
+            <div class="chapter-header fade-in">
+              <div class="ch-num-badge">
+                <div class="label">Bab</div>
+                <div class="num">${ch.id}</div>
+              </div>
+              <div class="ch-meta">
+                <div class="ch-tag">${ch.tag}${ch.hasQuiz ? ' &bull; Ada Kuis' : ''}</div>
+                <h2>${ch.title}</h2>
+                <div class="ch-time">Estimasi waktu: <span>${ch.time}</span></div>
+              </div>
+            </div>
+            ${ch.content()}
+            ${quizHtml}
+            <div class="content-card" style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+              ${isDone
+                ? `<button class="btn-complete done" disabled>✓ Bab Selesai</button>`
+                : `<button class="btn-complete" onclick="markDone(${ch.id})">Tandai Selesai &checkmark;</button>`}
+              ${nextCh ? `<button class="btn-next" onclick="goChapter(${nextCh.id})">Bab ${nextCh.id}: ${nextCh.title} →</button>` : `<button class="btn-next" onclick="goDash()">Kembali ke Dashboard →</button>`}
+            </div>
+          </div>
+        </div>
+      </div>`;
+    }
+
+    /* ═══════════════════════════════════════════════
+       RENDER: QUIZ
+    ═══════════════════════════════════════════════ */
+    function renderQuiz(chId) {
+      const quiz = QUIZZES[chId];
+      if (!quiz) return '';
+      const submitted = !!state.qSubmitted[chId];
+      const sel = state.qSel[chId] || {};
+
+      const questions = quiz.qs.map((item, qi) => {
+        const opts = item.opts.map((opt, oi) => {
+          let cls = 'quiz-opt';
+          let bubble = '';
+          if (!submitted) {
+            if (sel[qi] === oi) cls += ' selected';
+            bubble = sel[qi] === oi ? '●' : '';
+          } else {
+            if (oi === item.ans) cls += ' correct';
+            else if (sel[qi] === oi && oi !== item.ans) cls += ' wrong';
+            bubble = oi === item.ans ? '✓' : (sel[qi] === oi ? '✗' : '');
+          }
+          const clickHnd = !submitted ? `onclick="selectOpt(${chId}, ${qi}, ${oi})"` : '';
+          return `<div class="${cls}" ${clickHnd}>
+            <div class="opt-bubble">${bubble}</div>
+            <div class="opt-text">${opt}</div>
+          </div>`;
+        }).join('');
+
+        const expHtml = submitted
+          ? `<div style="margin-top:10px;padding:10px 12px;background:var(--teal-20);border-radius:8px;font-size:12px;color:var(--gray-700);line-height:1.6">
+              <strong style="color:var(--teal)">💡 Penjelasan:</strong> ${item.exp}
+            </div>`
+          : '';
+
+        return `<div class="quiz-q-card">
+          <div class="quiz-q-num">Pertanyaan ${qi + 1} dari ${quiz.qs.length}</div>
+          <div class="quiz-q-text">${item.q}</div>
+          <div class="quiz-options">${opts}</div>
+          ${expHtml}
+        </div>`;
+      }).join('');
+
+      const allAnswered = quiz.qs.every((_, qi) => sel[qi] !== undefined);
+      const resultHtml = submitted ? renderQuizResult(chId) : '';
+      const submitBtn = !submitted
+        ? `<button class="btn-submit-quiz" onclick="submitQuiz(${chId})" ${!allAnswered ? 'disabled' : ''}>
+            ${!allAnswered ? `Jawab semua pertanyaan dulu (${Object.keys(sel).length}/${quiz.qs.length})` : 'Lihat Hasil Kuis ✓'}
+          </button>`
+        : '';
+
+      return `<div class="quiz-section">
+        <div class="quiz-header">
+          <div class="quiz-icon">🧩</div>
+          <div>
+            <div class="quiz-tag">${quiz.subtitle}</div>
+            <h3>${quiz.title}</h3>
+          </div>
+        </div>
+        ${questions}
+        ${submitBtn}
+        ${resultHtml}
+      </div>`;
+    }
+
+    function renderQuizResult(chId) {
+      const r = quizScore(chId);
+      if (!r) return '';
+      const pct = Math.round((r.score / r.total) * 100);
+      let cls = pct >= 80 ? 'good' : pct >= 50 ? 'avg' : 'low';
+      let msg = pct >= 80
+        ? ['Luar Biasa!', 'Pemahaman Anda sangat kuat. Lanjutkan ke bab berikutnya dengan percaya diri.']
+        : pct >= 50
+        ? ['Cukup Baik!', 'Beberapa konsep perlu diulang. Baca kembali bab terkait untuk memperkuat pemahaman.']
+        : ['Perlu Diulang', 'Coba baca ulang materinya, lalu refresh halaman untuk mengerjakan kuis lagi.'];
+      return `<div class="quiz-result">
+        <div class="qr-score-row">
+          <div class="qr-score-circle ${cls}">
+            <div class="score-num">${r.score}</div>
+            <div class="score-denom">/ ${r.total}</div>
+          </div>
+          <div class="qr-msg">
+            <div class="qr-title">${msg[0]} ${pct}% benar</div>
+            <div class="qr-sub">${msg[1]}</div>
+          </div>
+        </div>
+      </div>`;
+    }
+
+    /* ═══════════════════════════════════════════════
+       ACTIONS
+    ═══════════════════════════════════════════════ */
+    function doLogin() {
+      const u = document.getElementById('uname').value.trim();
+      const p = document.getElementById('upass').value;
+      const err = document.getElementById('login-err');
+      if (u === 'manrisk' && p === 'Semangat!') {
+        state.view = 'dashboard';
+        render();
+      } else {
+        err.classList.add('show');
+        document.querySelector('.login-card').style.animation = 'none';
+        setTimeout(() => {
+          document.querySelector('.login-input')?.closest('.login-card')?.classList.add('shake');
+          err.classList.add('show');
+        }, 10);
+        setTimeout(() => {
+          const card = document.querySelector('.login-card');
+          if (card) { card.classList.remove('shake'); void card.offsetWidth; card.classList.add('shake'); }
+        }, 50);
+      }
+    }
+    function doLogout() { state.view = 'login'; render(); }
+    function goDash()   { state.view = 'dashboard'; render(); }
+    function goChapter(id) { state.chId = id; state.view = 'chapter'; render(); }
+    function markDone(id) {
+      state.done.add(id);
+      render();
+      document.getElementById('content-scroll')?.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+    function selectOpt(chId, qi, oi) {
+      if (state.qSubmitted[chId]) return;
+      if (!state.qSel[chId]) state.qSel[chId] = {};
+      state.qSel[chId][qi] = oi;
+      const quiz = QUIZZES[chId];
+      const sel = state.qSel[chId];
+      const allAnswered = quiz.qs.every((_, i) => sel[i] !== undefined);
+      // Re-render quiz section only for performance
+      const r = quizScore(chId);
+      // Update opts display
+      const qCard = document.querySelectorAll('.quiz-q-card')[qi];
+      if (qCard) {
+        qCard.querySelectorAll('.quiz-opt').forEach((el, idx) => {
+          el.classList.remove('selected');
+          if (idx === oi) el.classList.add('selected');
+          const bubble = el.querySelector('.opt-bubble');
+          if (bubble) bubble.textContent = idx === oi ? '●' : '';
+        });
+      }
+      // Update submit button
+      const btn = document.querySelector('.btn-submit-quiz');
+      if (btn) {
+        const count = Object.keys(sel).length;
+        if (allAnswered) {
+          btn.disabled = false;
+          btn.textContent = 'Lihat Hasil Kuis ✓';
+        } else {
+          btn.textContent = `Jawab semua pertanyaan dulu (${count}/${quiz.qs.length})`;
+        }
+      }
+    }
+    function submitQuiz(chId) {
+      state.qSubmitted[chId] = true;
+      const r = quizScore(chId);
+      state.quizDone[chId] = r;
+      render();
+      setTimeout(() => {
+        document.querySelector('.quiz-section')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 200);
+    }
+
+    /* ═══════════════════════════════════════════════
+       RENDER ENGINE
+    ═══════════════════════════════════════════════ */
+    function render() {
+      const app = document.getElementById('app');
+      if (state.view === 'login')     app.innerHTML = renderLogin();
+      else if (state.view === 'dashboard') app.innerHTML = renderDashboard();
+      else if (state.view === 'chapter')   app.innerHTML = renderChapter();
+    }
+
+    /* ─── Keyboard support ─── */
+    document.addEventListener('keydown', e => {
+      if (state.view === 'login' && e.key === 'Enter') doLogin();
+    });
+
+    /* ─── INIT ─── */
+    render();
+  </script>
+</body>
+</html>
